@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36429.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhistTournaments", "WhistTournaments\WhistTournaments.csproj", "{7CDA0E57-D85B-44DE-8198-7FF513C0350D}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WhistDB", "WhistDB\WhistDB.sqlproj", "{DE1D0F70-604D-446E-BC52-7B5C9942A1E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhistTournaments.BLL", "WhistTournaments.BLL\WhistTournaments.BLL.csproj", "{BA12BC31-44AD-47C0-912E-59734B18D51F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhistTournaments.DAL", "WhistTournaments.DAL\WhistTournaments.DAL.csproj", "{9BFA94DD-4A7F-4186-B7B3-18A1E36B8D7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhistTournaments.DL", "WhistTournaments.DL\WhistTournaments.DL.csproj", "{5CC896AC-CD81-46D4-B79F-8B470F595674}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7CDA0E57-D85B-44DE-8198-7FF513C0350D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CDA0E57-D85B-44DE-8198-7FF513C0350D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CDA0E57-D85B-44DE-8198-7FF513C0350D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CDA0E57-D85B-44DE-8198-7FF513C0350D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE1D0F70-604D-446E-BC52-7B5C9942A1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE1D0F70-604D-446E-BC52-7B5C9942A1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE1D0F70-604D-446E-BC52-7B5C9942A1E1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DE1D0F70-604D-446E-BC52-7B5C9942A1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE1D0F70-604D-446E-BC52-7B5C9942A1E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE1D0F70-604D-446E-BC52-7B5C9942A1E1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BA12BC31-44AD-47C0-912E-59734B18D51F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA12BC31-44AD-47C0-912E-59734B18D51F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA12BC31-44AD-47C0-912E-59734B18D51F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA12BC31-44AD-47C0-912E-59734B18D51F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BFA94DD-4A7F-4186-B7B3-18A1E36B8D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BFA94DD-4A7F-4186-B7B3-18A1E36B8D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BFA94DD-4A7F-4186-B7B3-18A1E36B8D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BFA94DD-4A7F-4186-B7B3-18A1E36B8D7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CC896AC-CD81-46D4-B79F-8B470F595674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CC896AC-CD81-46D4-B79F-8B470F595674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CC896AC-CD81-46D4-B79F-8B470F595674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CC896AC-CD81-46D4-B79F-8B470F595674}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B04BB515-0C48-4CF8-B97E-028D0ACED707}
+	EndGlobalSection
+EndGlobal
