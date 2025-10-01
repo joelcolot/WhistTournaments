@@ -1,0 +1,18 @@
+﻿@using WhistTournaments.Models.Users
+@model UserLoginFormDTO
+
+<h1>Login</h1>
+
+<p>WiP</p>
+
+<form asp-controller="User" asp-action="Login" method="post">
+    <div>
+        <label asp-for="Username">Username: </label>
+        <input asp-for="Username" />
+    </div>
+    <div>
+        <label asp-for="Password">Password: </label>
+        <input asp-for="Password" type="password" />
+    </div>
+    <button type="submit">Login</button>
+</form>

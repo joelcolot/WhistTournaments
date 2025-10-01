@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using WhistTournaments.BLL.Services;
 using WhistTournaments.DAL.Repositories;
 
@@ -5,6 +6,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath="/User/Login";
+        options.LogoutPath="/Home/Index";
+        options.AccessDeniedPath="/Home/Index";
+        options.ExpireTimeSpan=TimeSpan.FromHours(24);
+    });
+
+builder.Services.AddSession();
+
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<TournamentRepository>();
@@ -26,6 +40,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseSession();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

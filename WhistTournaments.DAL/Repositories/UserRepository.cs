@@ -63,9 +63,9 @@ namespace WhistTournaments.DAL.Repositories
             }
         }
 
-        public User GetUserByUsername(string username)
+        public User? GetUserByUsername(string username)
         {
-            User user = new User();
+            User? user = new User();
             using(SqlConnection connection = new SqlConnection(_connectionString))
             using(SqlCommand command = connection.CreateCommand())
             {
@@ -79,8 +79,13 @@ namespace WhistTournaments.DAL.Repositories
                     user.Email=(string)reader["Email"];
                     user.Gender=(Gender)reader["gender"];
                     user.Role=(Role)reader["role"];
+                    user.Password=(string)reader["Password"];
                 }
-                return user;
+                //else 
+                //{
+                //    return null;
+                //}
+                    return user;
             }
         }
     }

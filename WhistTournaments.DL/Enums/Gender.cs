@@ -10,6 +10,6 @@ namespace WhistTournaments.DL.Enums
     {
         Female,
         Male,
-        Other,
+        Other
     }
 }

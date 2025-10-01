@@ -16,9 +16,9 @@ namespace WhistTournaments.BLL.Services
             _userRepository = userRepository;
         }
 
-        public void AddUser(User user) 
+        public bool AddUser(User user) 
         {
-            _userRepository.AddUser(user);
+            return _userRepository.AddUser(user);
         }
 
         public string GetUsernameById(int id) 
@@ -33,9 +33,15 @@ namespace WhistTournaments.BLL.Services
             return _userRepository.GetUserById(id);
         }
 
-        public User GetUserByUsername(string username)
+        public User? GetUserByUsername(string username)
         {
             return _userRepository.GetUserByUsername(username);
+        }
+
+        public User? Login(string username) 
+        {
+            User? user = _userRepository.GetUserByUsername(username);
+            return user;
         }
     }
 }
