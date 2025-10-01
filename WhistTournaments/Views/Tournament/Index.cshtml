@@ -74,6 +74,17 @@
                        asp-route-id="@item.Id">
                         Détails
                     </a>
+                    @if (item.NbSubscribedPlayers < item.NbPlayers)
+                    {
+                        <a class="btn btn-sm btn-primary"
+                        asp-controller="Tournament"
+                        asp-action="Subscribe"
+                        asp-route-id="@item.Id">
+                            S'inscrire
+                        </a>
+                    }
+
+
                 
             </td>
         </tr>

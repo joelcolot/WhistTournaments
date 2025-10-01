@@ -59,7 +59,8 @@ namespace WhistTournaments.Controllers
                 Console.WriteLine("Username already used");
                 return View();
             }
-            _userService.HashPassword(user.Password);
+            user.Password = _userService.HashPassword(user.Password);
+
             if(!_userService.AddUser(user.FromUserRegisterDTO())) 
             {
                 user.Password="";
@@ -128,6 +129,9 @@ namespace WhistTournaments.Controllers
                     ], CookieAuthenticationDefaults.AuthenticationScheme)
                 );
             HttpContext.SignInAsync(claimsPrincipal);
+
+            
+
             return RedirectToAction("Index","Home");
         }
 

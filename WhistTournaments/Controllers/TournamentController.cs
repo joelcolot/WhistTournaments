@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WhistTournaments.DL.Entities;
-using WhistTournaments.Models.Tournaments;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Security.Claims;
 using WhistTournaments.BLL.Services;
+using WhistTournaments.DL.Entities;
+using WhistTournaments.Extensions;
 using WhistTournaments.Mappers;
+using WhistTournaments.Models.Tournaments;
 
 namespace WhistTournaments.Controllers
 {
@@ -47,6 +50,15 @@ namespace WhistTournaments.Controllers
 
             return View(dto);
 
+        }
+
+        public IActionResult Subscribe([FromRoute] int id)
+        {
+            Tournament? tournament = _tournamentService.GetById(id);
+
+            _tournamentService.SubscribeToTournament(id, User.GetId());
+
+            return RedirectToAction("Index", "Tournament");
         }
     }
 }
