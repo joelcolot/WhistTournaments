@@ -1,0 +1,96 @@
+﻿.bracket {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px; /* espace entre arbres et finale */
+    position: relative;
+}
+
+/* Chaque côté */
+.side {
+    display: flex;
+    flex-direction: row;
+    gap: 30px; /* colonnes par tour */
+    align-items: center;
+}
+
+/* Colonnes = tours */
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+/* Matchs */
+.match {
+    background: #f8f9fa;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    min-width: 120px;
+    text-align: center;
+    position: relative;
+    margin: 15px 0;
+}
+
+/* Finale */
+.finale {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.final {
+    background: #ffc107;
+    font-weight: bold;
+    min-width: 140px;
+    text-align: center;
+    border: 2px solid #ff9800;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Lignes entre tours – pseudo-éléments */
+.match::after {
+    content: "";
+    position: absolute;
+    height: 2px;
+    background: #666;
+    top: 50%;
+}
+
+/* Arbre gauche → lignes vers droite */
+.side.left .round1 .match::after {
+    width: 30px;
+    right: -30px;
+}
+
+.side.left .round2 .match::after {
+    width: 30px;
+    right: -30px;
+}
+
+.side.left .round3 .match::after {
+    width: 30px;
+    right: -30px;
+}
+
+/* Arbre droit inversé → lignes vers gauche */
+.side.right .round1 .match::after {
+    width: 30px;
+    left: -30px;
+}
+
+.side.right .round2 .match::after {
+    width: 30px;
+    left: -30px;
+}
+
+.side.right .round3 .match::after {
+    width: 30px;
+    left: -30px;
+}
+
+/*#L5 {
+    margin-top: -20px; 
+}*/

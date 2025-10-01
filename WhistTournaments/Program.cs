@@ -1,7 +1,16 @@
+using WhistTournaments.BLL.Services;
+using WhistTournaments.DAL.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<TournamentRepository>();
+builder.Services.AddScoped<GameRepository>();
+
+builder.Services.AddScoped<TournamentService>();
+builder.Services.AddScoped<GameService>();
 
 var app = builder.Build();
 
@@ -22,7 +31,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Tournament}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

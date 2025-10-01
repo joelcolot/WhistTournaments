@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WhistTournaments.DAL\WhistTournaments.DAL.csproj" />
+    <ProjectReference Include="..\WhistTournaments.DL\WhistTournaments.DL.csproj" />
+  </ItemGroup>
+
 </Project>

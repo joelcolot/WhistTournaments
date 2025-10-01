@@ -62,7 +62,9 @@
   <ItemGroup>
     <Build Include="Tables\USER.sql" />
     <Build Include="Tables\TOURNAMENT.sql" />
-    <Build Include="Tables\SUBSCRIPTIONS.sql" />
     <Build Include="Tables\GAME.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\insert into game.sql" />
   </ItemGroup>
 </Project>
