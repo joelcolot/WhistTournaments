@@ -6,9 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<TournamentRepository>();
 builder.Services.AddScoped<GameRepository>();
 
+builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TournamentService>();
 builder.Services.AddScoped<GameService>();
 
