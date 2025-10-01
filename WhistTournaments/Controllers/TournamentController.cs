@@ -46,5 +46,24 @@ namespace WhistTournaments.Controllers
             return View(dto);
 
         }
+
+        [HttpGet]
+        public IActionResult CreateTournament() 
+        {
+            return View(new TournamentDetailDto());
+        }
+        [HttpPost]
+        public IActionResult CreateTournament([FromForm] TournamentDetailDto tournament) 
+        {
+            Console.WriteLine(tournament.RegEndDate);
+            Console.WriteLine(tournament.StartDate);
+            Console.WriteLine(tournament.Name);
+            if(!_tournamentService.AddTournament(tournament.FromTournamentDetailDto())) 
+            {
+                throw new Exception();
+            }
+
+            return RedirectToAction("Index", "Tournament");
+        }
     }
 }

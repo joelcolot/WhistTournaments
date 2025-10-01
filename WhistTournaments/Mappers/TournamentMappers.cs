@@ -42,5 +42,21 @@ namespace WhistTournaments.Mappers
                     .ToList()
             };
         }
+
+        public static Tournament FromTournamentDetailDto(this TournamentDetailDto tournament) 
+        {
+            return new Tournament() 
+            {
+                Id=tournament.Id,
+                Name=tournament.Name,
+                Type=tournament.Type,
+                RegistrationEndDate=tournament.RegEndDate,
+                StartDate=tournament.StartDate,
+                NbSubscribedPlayers=tournament.NbSubscribedPlayers,
+                NbPlayers=tournament.NbPlayers,
+                NbGames=tournament.NbMatchs,
+                OnGoing=tournament.OnGoing,
+            };
+        }
     }
 }

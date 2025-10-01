@@ -25,5 +25,10 @@ namespace WhistTournaments.BLL.Services
         {
             return _tournamentRepository.GetById(id);
         }
+
+        public bool AddTournament(Tournament tournament) 
+        {
+            return _tournamentRepository.Add(tournament);
+        }
     }
 }

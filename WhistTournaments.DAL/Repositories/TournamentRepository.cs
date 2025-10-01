@@ -14,15 +14,15 @@ namespace WhistTournaments.DAL.Repositories
     {
         private string _connectionstring = "server=10.2.28.135;database=WhistDB;uid=sa;pwd=test1234=;trustServerCertificate=true";
 
-        public void Add(Tournament tournament)
+        public bool Add(Tournament tournament)
         {
             using (SqlConnection connection = new SqlConnection(_connectionstring))
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = @"INSERT INTO TOURNAMENT 
-                                        (NAME, TYPE, REG_ENDDATE, STARTDATE, NB_PLAYERS, NB_GAMES, ONGOING)
+                                        (NAME, TYPE, REG_ENDDATE, STARTDATE, NB_PLAYERS, NB_SUBSCRIBED_PLAYERS,NB_GAMES, ONGOING)
                                         VALUES
-                                        (@name, @type, @reg_enddate, @startdate, @nbplayers, @nbgames, @ongoing);";
+                                        (@name, @type, @reg_enddate, @startdate, @nbplayers, 0, (@nbplayers/2)-1, @ongoing);";
 
                 command.Parameters.AddWithValue("@name", tournament.Name);
                 command.Parameters.AddWithValue("@type", tournament.Type);
@@ -34,9 +34,7 @@ namespace WhistTournaments.DAL.Repositories
 
                 connection.Open();
 
-                command.ExecuteNonQuery();
-
-                connection.Close();
+                return (command.ExecuteNonQuery()==1 ? true : false);
             }
         }
 

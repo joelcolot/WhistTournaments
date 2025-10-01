@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using WhistTournaments.DL.Enums;
 using WhistTournaments.Models.Games;
 
@@ -14,13 +15,13 @@ namespace WhistTournaments.Models.Tournaments
         public string Name { get; set; }
 
         [DisplayName("Type")]
-
         public Type_Tournament Type { get; set; }
 
         [DisplayName("Fin des Inscriptions")]
         public DateTime RegEndDate { get; set; }
 
         [DisplayName("Date et heure de début")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}",ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
         [DisplayName("Nombre de Joueurs Inscrits")]

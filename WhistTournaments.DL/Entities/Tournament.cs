@@ -11,7 +11,7 @@ namespace WhistTournaments.DL.Entities
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         public Type_Tournament Type { get; set; }
 
@@ -27,6 +27,6 @@ namespace WhistTournaments.DL.Entities
 
         public bool OnGoing { get; set; } = false;
 
-        public List<Game> Games { get; set; }
+        public List<Game> Games { get; set; } = null!;
     }
 }
