@@ -1,12 +1,12 @@
-﻿using WhistTournaments.DL.Entities;
+﻿using WhistTournaments.BLL.Services;
+using WhistTournaments.DL.Entities;
 using WhistTournaments.Models.Games;
 
 namespace WhistTournaments.Mappers
 {
     public static class GameMappers
     {
-
-        public static GameDto ToGameDto(this Game game)
+        public static GameDto ToGameDto(this Game game, UserService userservice)
         {
             return new GameDto()
             {
@@ -16,6 +16,10 @@ namespace WhistTournaments.Mappers
                 IdPlayer2 = game.Player2,
                 IdPlayer3 = game.Player3,
                 IdPlayer4 = game.Player4,
+                Player1 = userservice.GetUsernameById(game.Player1),
+                Player2 = userservice.GetUsernameById(game.Player2),
+                Player3 = userservice.GetUsernameById(game.Player3),
+                Player4 = userservice.GetUsernameById(game.Player4),
                 ScorePlayer1 = game.Score1,
                 ScorePlayer2 = game.Score2,
                 ScorePlayer3 = game.Score3,

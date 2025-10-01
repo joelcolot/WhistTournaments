@@ -10,11 +10,13 @@ namespace WhistTournaments.Controllers
     {
         private readonly TournamentService _tournamentService;
         private readonly GameService _gameService;
+        private readonly UserService _userService;
 
-        public TournamentController(TournamentService tournamentservice, GameService gameService)
+        public TournamentController(TournamentService tournamentservice, GameService gameService, UserService userService)
         {
             _tournamentService = tournamentservice;
             _gameService = gameService;
+            _userService = userService;
         }
 
 
@@ -41,7 +43,7 @@ namespace WhistTournaments.Controllers
 
             List<Game> games = _gameService.GetAllGamesByTournamentId(id);
 
-            TournamentDetailDto dto = tournament.ToTournamentDetailDto(games);
+            TournamentDetailDto dto = tournament.ToTournamentDetailDto(games, _userService);
 
             return View(dto);
 

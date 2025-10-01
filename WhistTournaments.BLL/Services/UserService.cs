@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Isopoh.Cryptography.Argon2;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,6 +43,16 @@ namespace WhistTournaments.BLL.Services
         {
             User? user = _userRepository.GetUserByUsername(username);
             return user;
+        }
+
+        public string HashPassword(string password)
+        {
+            return Argon2.Hash(password);
+        }
+
+        public bool VerifyPassword(string password, string hashedPassword)
+        {
+            return Argon2.Verify(hashedPassword, password);
         }
     }
 }
