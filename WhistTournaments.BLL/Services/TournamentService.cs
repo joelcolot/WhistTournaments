@@ -11,10 +11,12 @@ namespace WhistTournaments.BLL.Services
     public class TournamentService
     {
         private readonly TournamentRepository _tournamentRepository;
+        private readonly GameRepository _gameRepository;
 
-        public TournamentService(TournamentRepository tournamentRepository)
+        public TournamentService(TournamentRepository tournamentRepository, GameRepository gameRepository)
         {
             _tournamentRepository = tournamentRepository;
+            _gameRepository = gameRepository;
         }
 
         public List<Tournament> GetAll()
@@ -23,10 +25,21 @@ namespace WhistTournaments.BLL.Services
         }
         public Tournament? GetById(int id)
         {
-            return _tournamentRepository.GetById(id);
+            Tournament? tournament = _tournamentRepository.GetById(id);
+            if(tournament is not null) 
+            {
+                List<Game> games=_gameRepository.GetAllGamesByTournamentId(id);
+                tournament.Games = games;
+            }
+            return tournament;
         }
 
         public bool AddTournament(Tournament tournament) 
+        {
+            return _tournamentRepository.Add(tournament);
+        }
+
+        public bool UpdateTournament(Tournament tournament,int id) 
         {
             return _tournamentRepository.Add(tournament);
         }

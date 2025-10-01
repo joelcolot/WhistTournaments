@@ -3,6 +3,7 @@ using WhistTournaments.DL.Entities;
 using WhistTournaments.Models.Tournaments;
 using WhistTournaments.BLL.Services;
 using WhistTournaments.Mappers;
+using System.Xml;
 
 namespace WhistTournaments.Controllers
 {
@@ -64,6 +65,29 @@ namespace WhistTournaments.Controllers
             }
 
             return RedirectToAction("Index", "Tournament");
+        }
+
+        [HttpGet("/tournament/update/{id}")]
+        public IActionResult UpdateTournament([FromRoute] int id) 
+        {
+             TournamentDetailDto tournament=new TournamentDetailDto();
+            List<Game> games = new List<Game>();
+            games=_gameService.GetAllGamesByTournamentId(id);
+            if(games.Count!=0) 
+            {
+                tournament = _tournamentService.GetById(id)!.ToTournamentDetailDto(games);
+            }
+            return View(tournament);
+        }
+
+        [HttpPost("/tournament/update/{id}")]
+        public IActionResult UpdateTournament([FromForm] TournamentDetailDto tournament,[FromRoute] int id) 
+        {
+            if(_tournamentService.UpdateTournament(tournament.FromTournamentDetailDto(),id)) 
+            {
+                return RedirectToAction("Index","tournament");
+            }
+            throw new Exception();
         }
     }
 }

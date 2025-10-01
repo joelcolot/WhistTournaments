@@ -75,17 +75,18 @@ namespace WhistTournaments.DAL.Repositories
                 SqlDataReader reader = command.ExecuteReader();
                 if(reader.Read())
                 {
+                    Console.WriteLine("If condition true");
                     user.UserName=(string)reader["user_name"];
                     user.Email=(string)reader["Email"];
                     user.Gender=(Gender)reader["gender"];
                     user.Role=(Role)reader["role"];
                     user.Password=(string)reader["Password"];
                 }
-                //else 
-                //{
-                //    return null;
-                //}
-                    return user;
+                else
+                {
+                    return null;
+                }
+                return user;
             }
         }
     }

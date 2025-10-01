@@ -103,5 +103,30 @@ namespace WhistTournaments.DAL.Repositories
                 OnGoing = (bool)reader["ONGOING"],
             };
         }
+
+        public bool UpdateTournament(Tournament tournament, int id) 
+        {
+            using(SqlConnection connection = new SqlConnection(_connectionstring))
+            using(SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText=@"UPDATE TOURNAMENT 
+                                      SET [NAME]=@name, [TYPE]=@type, REG_ENDDATE=@reg_enddate, 
+                                        STARTDATE=startdate, NB_PLAYERS=nbplayers, NB_SUBSCRIBED_PLAYERS=nbgames,
+                                        NB_GAMES=(nbplayers/2)-1, ONGOING=@ongoing 
+                                      WHERE [ID]=22";
+
+                command.Parameters.AddWithValue("@name",tournament.Name);
+                command.Parameters.AddWithValue("@type",tournament.Type);
+                command.Parameters.AddWithValue("@reg_enddate",tournament.RegistrationEndDate);
+                command.Parameters.AddWithValue("@startdate",tournament.StartDate);
+                command.Parameters.AddWithValue("@nbplayers",tournament.NbPlayers);
+                command.Parameters.AddWithValue("@nbgames",tournament.NbGames);
+                command.Parameters.AddWithValue("@ongoing",tournament.OnGoing);
+
+                connection.Open();
+
+                return (command.ExecuteNonQuery()==1 ? true : false);
+            }
+        }
     }
 }
