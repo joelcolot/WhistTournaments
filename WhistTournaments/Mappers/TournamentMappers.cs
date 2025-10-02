@@ -52,7 +52,7 @@ namespace WhistTournaments.Mappers
                 Type=tournament.Type,
                 RegEndDate=tournament.RegistrationEndDate,
                 StartDate=tournament.StartDate,
-                NbSubscribedPlayers=tournament.NbSubscribedPlayers,
+                NbSubscribedPlayers=tournament.RegisteredPlayers,
                 NbPlayers=tournament.NbPlayers,
                 NbMatchs=tournament.NbGames,
                 OnGoing=tournament.OnGoing,
