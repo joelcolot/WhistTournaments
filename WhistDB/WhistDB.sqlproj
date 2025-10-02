@@ -63,6 +63,7 @@
     <Build Include="Tables\USER.sql" />
     <Build Include="Tables\TOURNAMENT.sql" />
     <Build Include="Tables\GAME.sql" />
+    <Build Include="Tables\SUBSCRIPTION.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\insert into game.sql" />

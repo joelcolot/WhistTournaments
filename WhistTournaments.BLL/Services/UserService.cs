@@ -22,7 +22,7 @@ namespace WhistTournaments.BLL.Services
             return _userRepository.AddUser(user);
         }
 
-        public string GetUsernameById(int id) 
+        public string? GetUsernameById(int? id) 
         {
             string username=_userRepository.GetUsernameById(id);
             Console.WriteLine(username);
@@ -45,14 +45,14 @@ namespace WhistTournaments.BLL.Services
             return user;
         }
 
-        public string HashPassword(string password) 
+        public string HashPassword(string password)
         {
             return Argon2.Hash(password);
         }
 
-        public bool VerifyPassword(string password, string hashedPassword) 
+        public bool VerifyPassword(string password, string hashedPassword)
         {
-            return Argon2.Verify(hashedPassword,password);
+            return Argon2.Verify(hashedPassword, password);
         }
     }
 }

@@ -88,6 +88,32 @@ namespace WhistTournaments.DAL.Repositories
             return tournaments;
         }
 
+        public void SubscribeToTournament(int tournament_id, int user_id)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"UPDATE TOP (1) GAME
+                                        SET PLAYER_1 = CASE WHEN PLAYER_1 IS NULL THEN @userid ELSE PLAYER_1 END,
+                                            PLAYER_2 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NULL THEN @userid ELSE PLAYER_2 END,
+                                            PLAYER_3 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NULL THEN @userid ELSE PLAYER_3 END,
+                                            PLAYER_4 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NOT NULL AND PLAYER_4 IS NULL THEN @userid ELSE PLAYER_4 END
+                                        WHERE TOURNAMENT_ID = @tournamentid
+                                        AND (PLAYER_1 IS NULL OR PLAYER_2 IS NULL OR PLAYER_3 IS NULL OR PLAYER_4 IS NULL)
+                                        AND STEP > 3;";
+
+                command.Parameters.AddWithValue("tournamentid", tournament_id);
+                command.Parameters.AddWithValue("userid", user_id);
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+
+            }
+        }
+
         public Tournament MapTournament(SqlDataReader reader)
         {
             return new Tournament()

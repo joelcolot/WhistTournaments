@@ -43,5 +43,10 @@ namespace WhistTournaments.BLL.Services
         {
             return _tournamentRepository.UpdateTournament(tournament, id);
         }
+
+        public void SubscribeToTournament(int tournament_id, int user_id)
+        {
+            _tournamentRepository.SubscribeToTournament(tournament_id, user_id);
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿.bracket {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch; /* toutes les colonnes prennent la même hauteur */
     gap: 60px; /* espace entre arbres et finale */
     position: relative;
 }
@@ -9,16 +9,18 @@
 /* Chaque côté */
 .side {
     display: flex;
-    flex-direction: row;
-    gap: 30px; /* colonnes par tour */
-    align-items: center;
+    flex-direction: row; /* colonnes par tour */
+    gap: 40px; /* plus d’espace pour matchs larges */
+    align-items: center; /* verticalement centré */
 }
 
 /* Colonnes = tours */
 .column {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center; /* centre les demi-finales verticalement */
+    min-width: 250px; /* largeur minimale pour matchs larges */
+    max-width: 300px; /* limite esthétique */
 }
 
 /* Matchs */
@@ -26,11 +28,27 @@
     background: #f8f9fa;
     border: 2px solid #ccc;
     border-radius: 8px;
-    padding: 8px;
-    min-width: 120px;
+    padding: 12px 16px;
+    width: 100%; /* occupe toute la largeur de la colonne */
+    min-width: 250px;
+    max-width: 300px;
     text-align: center;
     position: relative;
-    margin: 15px 0;
+    margin: 20px 0;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    font-size: 14px;
+}
+
+/* Demi-finales */
+#DF1, #DF2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ff9800;
+    padding: 14px 16px;
+    border-radius: 8px;
+    word-wrap: break-word;
 }
 
 /* Finale */
@@ -43,14 +61,16 @@
 .final {
     background: #ffc107;
     font-weight: bold;
-    min-width: 140px;
+    min-width: 260px;
+    max-width: 320px;
     text-align: center;
     border: 2px solid #ff9800;
-    padding: 10px;
+    padding: 14px 16px;
     border-radius: 8px;
+    word-wrap: break-word;
 }
 
-/* Lignes entre tours – pseudo-éléments */
+/* Lignes horizontales pour visualiser progression */
 .match::after {
     content: "";
     position: absolute;
@@ -60,37 +80,15 @@
 }
 
 /* Arbre gauche → lignes vers droite */
-.side.left .round1 .match::after {
-    width: 30px;
-    right: -30px;
-}
-
+.side.left .round1 .match::after,
 .side.left .round2 .match::after {
-    width: 30px;
-    right: -30px;
-}
-
-.side.left .round3 .match::after {
-    width: 30px;
-    right: -30px;
+    width: 40px;
+    right: -40px;
 }
 
 /* Arbre droit inversé → lignes vers gauche */
-.side.right .round1 .match::after {
-    width: 30px;
-    left: -30px;
-}
-
+.side.right .round1 .match::after,
 .side.right .round2 .match::after {
-    width: 30px;
-    left: -30px;
+    width: 40px;
+    left: -40px;
 }
-
-.side.right .round3 .match::after {
-    width: 30px;
-    left: -30px;
-}
-
-/*#L5 {
-    margin-top: -20px; 
-}*/

@@ -15,51 +15,67 @@ namespace WhistTournaments.Models.Games
 
         [DisplayName("ID Joueur 1")]
 
-        public int IdPlayer1 { get; set; }
+        public int? IdPlayer1 { get; set; }
 
         [DisplayName("ID Joueur 2")]
 
-        public int IdPlayer2 { get; set; }
+        public int? IdPlayer2 { get; set; }
 
         [DisplayName("ID Joueur 3")]
 
-        public int IdPlayer3 { get; set; }
+        public int? IdPlayer3 { get; set; }
 
         [DisplayName("ID Joueur 4")]
 
-        public int IdPlayer4 { get; set; }
+        public int? IdPlayer4 { get; set; }
 
         [DisplayName("Joueur 1")]
 
-        public string Player1 { get; set; } = null!;
+        public string? Player1 { get; set; } = null!;
 
         [DisplayName("Joueur 2")]
 
-        public string Player2 { get; set; } = null!;
+        public string? Player2 { get; set; } = null!;
 
         [DisplayName("Joueur 3")]
 
-        public string Player3 { get; set; } = null!;
+        public string? Player3 { get; set; } = null!;
 
         [DisplayName("Joueur 4")]
 
-        public string Player4 { get; set; } = null!;
+        public string? Player4 { get; set; } = null!;
 
         [DisplayName("Score Joueur 1")]
 
-        public int ScorePlayer1 { get; set; }
+        public int? ScorePlayer1 { get; set; }
 
         [DisplayName("Score Joueur 2")]
 
-        public int ScorePlayer2 { get; set; }
+        public int? ScorePlayer2 { get; set; }
 
         [DisplayName("Score Joueur 3")]
 
-        public int ScorePlayer3 { get; set; }
+        public int? ScorePlayer3 { get; set; }
 
         [DisplayName("Score Joueur 4")]
 
-        public int ScorePlayer4 { get; set; }
+        public int? ScorePlayer4 { get; set; }
+
+        [DisplayName("Classement Joueur 1")]
+
+        public int? RankingPlayer1 { get; set; }
+
+        [DisplayName("Classement Joueur 2")]
+
+        public int? RankingPlayer2 { get; set; }
+
+        [DisplayName("Classement Joueur 3")]
+
+        public int? RankingPlayer3 { get; set; }
+
+        [DisplayName("Classement Joueur 41")]
+
+        public int? RankingPlayer4 { get; set; }
 
     }
 }

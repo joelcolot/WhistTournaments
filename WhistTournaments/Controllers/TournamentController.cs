@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WhistTournaments.DL.Entities;
-using WhistTournaments.Models.Tournaments;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Security.Claims;
 using WhistTournaments.BLL.Services;
+using WhistTournaments.DL.Entities;
+using WhistTournaments.Extensions;
 using WhistTournaments.Mappers;
-using System.Xml;
+using WhistTournaments.Models.Tournaments;
 
 namespace WhistTournaments.Controllers
 {
@@ -11,11 +14,13 @@ namespace WhistTournaments.Controllers
     {
         private readonly TournamentService _tournamentService;
         private readonly GameService _gameService;
+        private readonly UserService _userService;
 
-        public TournamentController(TournamentService tournamentservice, GameService gameService)
+        public TournamentController(TournamentService tournamentservice, GameService gameService, UserService userService)
         {
             _tournamentService = tournamentservice;
             _gameService = gameService;
+            _userService = userService;
         }
 
 
@@ -42,7 +47,7 @@ namespace WhistTournaments.Controllers
 
             List<Game> games = _gameService.GetAllGamesByTournamentId(id);
 
-            TournamentDetailDto dto = tournament.ToTournamentDetailDto(games);
+            TournamentDetailDto dto = tournament.ToTournamentDetailDto(games, _userService);
 
             return View(dto);
 
@@ -53,16 +58,27 @@ namespace WhistTournaments.Controllers
         {
             return View(new TournamentDetailDto());
         }
+        
         [HttpPost]
         public IActionResult CreateTournament([FromForm] TournamentDetailDto tournament) 
         {
-            Console.WriteLine(tournament.RegEndDate);
-            Console.WriteLine(tournament.StartDate);
-            Console.WriteLine(tournament.Name);
             if(!_tournamentService.AddTournament(tournament.FromTournamentDetailDto())) 
             {
                 throw new Exception();
             }
+            Console.WriteLine(tournament.RegEndDate);
+            Console.WriteLine(tournament.StartDate);
+            Console.WriteLine(tournament.Name);
+            
+            return RedirectToAction("Index", "Tournament");
+        }
+        
+        [Authorize]
+        public IActionResult Subscribe([FromRoute] int id)
+        {
+            Tournament? tournament = _tournamentService.GetById(id);
+
+            _tournamentService.SubscribeToTournament(id, User.GetId());
 
             return RedirectToAction("Index", "Tournament");
         }
@@ -93,5 +109,12 @@ namespace WhistTournaments.Controllers
             Console.WriteLine("id="+id);
             throw new Exception();
         }
+        
+        //[Authorize("Admin")]
+        //public IActionResult InitiateTournament([FromRoute] int id)
+        //{
+            
+
+        //}
     }
 }

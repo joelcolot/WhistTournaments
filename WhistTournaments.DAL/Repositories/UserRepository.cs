@@ -29,16 +29,22 @@ namespace WhistTournaments.DAL.Repositories
                 return command.ExecuteNonQuery()==1 ? true : false;
             }
         }
-        public string GetUsernameById(int id)
+        public string? GetUsernameById(int? id)
         {
             using(SqlConnection connection = new SqlConnection(_connectionString))
             using(SqlCommand command = connection.CreateCommand())
             {
-                command.CommandText="SELECT [USER_NAME] FROM [USER] WHERE [ID]=@id;";
-                command.Parameters.AddWithValue("@id",id);
-                connection.Open();
-                string username = (string)command.ExecuteScalar();
-                return username;
+                if (id != null)
+                {
+                    command.CommandText = "SELECT [USER_NAME] FROM [USER] WHERE [ID]=@id;";
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    string username = (string)command.ExecuteScalar();
+                    return username;
+                }
+
+                return null;
+
             }
         }
 
@@ -75,7 +81,7 @@ namespace WhistTournaments.DAL.Repositories
                 SqlDataReader reader = command.ExecuteReader();
                 if(reader.Read())
                 {
-                    Console.WriteLine("If condition true");
+                    user.Id = (int)reader["Id"];
                     user.UserName=(string)reader["user_name"];
                     user.Email=(string)reader["Email"];
                     user.Gender=(Gender)reader["gender"];

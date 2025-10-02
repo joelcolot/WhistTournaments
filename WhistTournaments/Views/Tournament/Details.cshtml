@@ -67,49 +67,76 @@
 </div>
 
 <div class="container my-5">
-    <h2 class="text-center mb-4">Tournoi Whist - 32 Joueurs</h2>
+    <h2 class="text-center mb-4">Tournoi Whist - 16 Joueurs</h2>
     <div class="bracket">
 
         <!-- Arbre gauche -->
         <div class="side left">
+            <!-- Tour 1 -->
             <div class="column round1">
-                <div class="match" id="L1">@(Model.gameDtos.FirstOrDefault(g => g.Step == 15)?.Player1)<br>J2<br>J3<br>J4</div>
-                <div class="match" id="L2">J5<br>J6<br>J7<br>J8</div>
-                <div class="match" id="L3">J9<br>J10<br>J11<br>J12</div>
-                <div class="match" id="L4">J13<br>J14<br>J15<br>J16</div>
+                <div class="match">
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 7)?.Player1) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 7)?.ScorePlayer1)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 7)?.Player2) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 7)?.ScorePlayer2)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 7)?.Player3) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 7)?.ScorePlayer3)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 7)?.Player4) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 7)?.ScorePlayer4)
+                </div>
+
+                <div class="match">
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 6)?.Player1) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 6)?.ScorePlayer1)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 6)?.Player2) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 6)?.ScorePlayer2)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 6)?.Player3) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 6)?.ScorePlayer3)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 6)?.Player4) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 6)?.ScorePlayer4)
+                </div>
             </div>
-            <div class="column round2">
-                <div class="match" id="L5">Top2 L1<br>Top2 L2<br>-<br>-</div>
-                <div class="match" id="L6">Top2 L3<br>Top2 L4<br>-<br>-</div>
-            </div>
-            <div class="column round3">
-                <div class="match" id="L7">Top2 L5<br>Top2 L6<br>-<br>-</div>
+            <!-- Tour 2 -->
+            <div class="column round2" id="DF1">
+                <div class="match">
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 3)?.Player1) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 3)?.ScorePlayer1)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 3)?.Player2) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 3)?.ScorePlayer2)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 3)?.Player3) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 3)?.ScorePlayer3)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 3)?.Player4) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 3)?.ScorePlayer4)
+                </div>
             </div>
         </div>
 
         <!-- Finale -->
         <div class="finale">
-            <div class="match final" id="F">Finaliste A<br>Finaliste B<br>Finaliste C<br>Finaliste D</div>
+            <div class="match final">
+                @(Model.gameDtos.FirstOrDefault(g => g.Step == 1)?.Player1) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 1)?.ScorePlayer1)<br>
+                @(Model.gameDtos.FirstOrDefault(g => g.Step == 1)?.Player2) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 1)?.ScorePlayer2)<br>
+                @(Model.gameDtos.FirstOrDefault(g => g.Step == 1)?.Player3) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 1)?.ScorePlayer3)<br>
+                @(Model.gameDtos.FirstOrDefault(g => g.Step == 1)?.Player4) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 1)?.ScorePlayer4)
+            </div>
         </div>
 
         <!-- Arbre droit inversé -->
         <div class="side right">
-            <div class="column round3">
-                <div class="match" id="R7">Top2 R5<br>Top2 R6<br>-<br>-</div>
-            </div>
-            <div class="column round2">
-                <div class="match" id="R5">Top2 R1<br>Top2 R2<br>-<br>-</div>
-                <div class="match" id="R6">Top2 R3<br>Top2 R4<br>-<br>-</div>
-            </div>
 
+            <!-- Tour 2 -->
+            <div class="column round2" id="DF2">
+                <div class="match">
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 2)?.Player1) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 2)?.ScorePlayer1)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 2)?.Player2) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 2)?.ScorePlayer2)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 2)?.Player3) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 2)?.ScorePlayer3)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 2)?.Player4) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 2)?.ScorePlayer4)
+                </div>
+            </div>
+            <!-- Tour 1 -->
             <div class="column round1">
-                <div class="match" id="R1">J17<br>J18<br>J19<br>J20</div>
-                <div class="match" id="R2">J21<br>J22<br>J23<br>J24</div>
-                <div class="match" id="R3">J25<br>J26<br>J27<br>J28</div>
-                <div class="match" id="R4">J29<br>J30<br>J31<br>J32</div>
+                <div class="match">
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 5)?.Player1) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 5)?.ScorePlayer1)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 5)?.Player2) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 5)?.ScorePlayer2)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 5)?.Player3) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 5)?.ScorePlayer3)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 5)?.Player4) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 5)?.ScorePlayer4)
+                </div>
+                <div class="match">
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 4)?.Player1) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 4)?.ScorePlayer1)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 4)?.Player2) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 4)?.ScorePlayer2)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 4)?.Player3) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 4)?.ScorePlayer3)<br>
+                    @(Model.gameDtos.FirstOrDefault(g => g.Step == 4)?.Player4) : @(Model.gameDtos.FirstOrDefault(g => g.Step == 4)?.ScorePlayer4)
+                </div>
             </div>
         </div>
 
     </div>
 </div>
-

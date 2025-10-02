@@ -1,4 +1,5 @@
-﻿using WhistTournaments.DL.Entities;
+﻿using WhistTournaments.BLL.Services;
+using WhistTournaments.DL.Entities;
 using WhistTournaments.Models.Games;
 using WhistTournaments.Models.Tournaments;
 
@@ -22,7 +23,7 @@ namespace WhistTournaments.Mappers
             };
         }
 
-        public static TournamentDetailDto ToTournamentDetailDto(this Tournament tournament, List<Game> games)
+        public static TournamentDetailDto ToTournamentDetailDto(this Tournament tournament, List<Game> games, UserService userservice)
         {
             
 
@@ -38,7 +39,7 @@ namespace WhistTournaments.Mappers
                 NbMatchs = tournament.NbGames,
                 OnGoing = tournament.OnGoing,
                 gameDtos = games
-                    .Select(g => g.ToGameDto())
+                    .Select(g => g.ToGameDto(userservice))
                     .ToList()
             };
         }
