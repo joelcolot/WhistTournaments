@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WhistTournaments.Models.Tournaments.TournamentIndexDto>
+﻿@using WhistTournaments.Extensions
+@model IEnumerable<WhistTournaments.Models.Tournaments.TournamentIndexDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,9 +7,13 @@
 
 <h1>Index</h1>
 
+@if(User.IsAdmin())
+{
 <p>
     <a asp-controller="Tournament" asp-action="CreateTournament">Create New</a>
 </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -74,7 +79,7 @@
                        asp-route-id="@item.Id">
                         Détails
                     </a>
-                    @if (item.NbSubscribedPlayers < item.NbPlayers)
+                    @if (item.NbSubscribedPlayers < item.NbPlayers && User.IsConnected())
                     {
                         <a class="btn btn-sm btn-primary"
                         asp-controller="Tournament"
@@ -84,7 +89,8 @@
                         </a>
                     }
 
-
+                    @if(User.IsAdmin())
+                    {
                     <a class="btn btn-danger"
                         asp-controller="Tournament"
                         asp-action="Update"

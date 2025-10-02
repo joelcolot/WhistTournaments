@@ -22,7 +22,9 @@ namespace WhistTournaments.Mappers
         {
             return new UserAccountDTO()
             {
+                Id= user.Id,
                 UserName=user.UserName,
+                FullName=user.FirstName + " " + user.LastName,
                 Email=user.Email,
                 Gender=user.Gender,
                 Role=user.Role,

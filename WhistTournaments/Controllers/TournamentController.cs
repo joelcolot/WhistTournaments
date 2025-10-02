@@ -28,11 +28,11 @@ namespace WhistTournaments.Controllers
         public IActionResult Index()
         {
             List<Tournament> tournaments = _tournamentService.GetAll();
-
+            //  Add the nb of already subscribed players.
             List<TournamentIndexDto> dtos = tournaments
                 .Select(t => t.ToTournamentIndexDto())
                 .ToList();
-
+            
 
             return View(dtos);
         }
@@ -53,12 +53,14 @@ namespace WhistTournaments.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult CreateTournament() 
         {
             return View(new TournamentDetailDto());
         }
-        
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CreateTournament([FromForm] TournamentDetailDto tournament) 
         {
@@ -66,9 +68,6 @@ namespace WhistTournaments.Controllers
             {
                 throw new Exception();
             }
-            Console.WriteLine(tournament.RegEndDate);
-            Console.WriteLine(tournament.StartDate);
-            Console.WriteLine(tournament.Name);
             
             return RedirectToAction("Index", "Tournament");
         }
@@ -90,6 +89,7 @@ namespace WhistTournaments.Controllers
             return RedirectToAction("Index", "Tournament");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("/tournament/update/{id}")]
         public IActionResult UpdateTournament([FromRoute] int id) 
         {
@@ -104,6 +104,7 @@ namespace WhistTournaments.Controllers
             return View(tournament);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("/tournament/update/{id}")]
         public IActionResult UpdateTournament([FromForm] TournamentDetailDto tournament,[FromRoute] int id) 
         {

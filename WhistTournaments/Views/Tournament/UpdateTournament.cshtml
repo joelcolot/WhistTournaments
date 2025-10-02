@@ -17,11 +17,11 @@
     </div>
     <div>
         <label asp-for="RegEndDate">@Html.DisplayNameFor(m => Model.RegEndDate)</label>
-        <input asp-for="RegEndDate" type="date" value="@Html.DisplayFor(m=>Model.RegEndDate)" />
+        <input asp-for="RegEndDate" type="datetime-local" value="@Html.Display(Model.RegEndDate.ToString())" />
     </div>
     <div>
         <label asp-for="StartDate">@Html.DisplayNameFor(m => Model.StartDate)</label>
-        <input asp-for="StartDate" type="date" />
+        <input asp-for="StartDate" type="datetime-local" />
     </div>
     <div>
         <label asp-for="NbPlayers"></label>

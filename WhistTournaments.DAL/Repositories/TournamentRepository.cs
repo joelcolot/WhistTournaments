@@ -1,10 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using WhistTournaments.DL.Entities;
 using WhistTournaments.DL.Enums;
 
