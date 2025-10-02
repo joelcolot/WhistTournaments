@@ -3,10 +3,10 @@
 
 <h1>WiP</h1>
 
-<form asp-controller="Tournament" asp-action="UpdateTournament" method="post">
+<form asp-controller="Tournament" asp-action="UpdateTournament" asp-route-id="@Model.Id" method="post">
     <div>
-        <label asp-for="Name">@Html.DisplayName(Model.Name)</label>
-        <input asp-for="Name" value=@Html.Display(Model.Name) />
+        <label asp-for="Name">@Html.DisplayNameFor(m => Model.Name)</label>
+        <input asp-for="Name" />
     </div>
     <div>
         <label asp-for="Type">@Html.DisplayNameFor(m => Model.Type)</label>
@@ -31,5 +31,9 @@
             <option value="16">16</option>
         </select>
     </div>
-    <button type="submit" asp-route-id="{id}">Update tournament</button>
+    <div>
+        <label asp-for="NbSubscribedPlayers">@Html.DisplayNameFor(m => Model.NbSubscribedPlayers)</label>
+        <input asp-for="NbSubscribedPlayers" type="number" value="@Html.DisplayFor(m => Model.NbSubscribedPlayers)" />
+    </div>
+    <button type="submit">Update tournament</button>
 </form>

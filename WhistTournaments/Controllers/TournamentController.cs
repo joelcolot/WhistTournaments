@@ -73,20 +73,24 @@ namespace WhistTournaments.Controllers
              TournamentDetailDto tournament=new TournamentDetailDto();
             List<Game> games = new List<Game>();
             games=_gameService.GetAllGamesByTournamentId(id);
-            if(games.Count!=0) 
-            {
+//            if(games.Count!=0) 
+//            {
                 tournament = _tournamentService.GetById(id)!.ToTournamentDetailDto(games);
-            }
+//            }
+            Console.WriteLine("id="+id);
             return View(tournament);
         }
 
         [HttpPost("/tournament/update/{id}")]
         public IActionResult UpdateTournament([FromForm] TournamentDetailDto tournament,[FromRoute] int id) 
         {
+            //int id = tournament.Id;
+            Console.WriteLine("id="+id);
             if(_tournamentService.UpdateTournament(tournament.FromTournamentDetailDto(),id)) 
             {
                 return RedirectToAction("Index","tournament");
             }
+            Console.WriteLine("id="+id);
             throw new Exception();
         }
     }

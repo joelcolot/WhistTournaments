@@ -41,7 +41,7 @@ namespace WhistTournaments.BLL.Services
 
         public bool UpdateTournament(Tournament tournament,int id) 
         {
-            return _tournamentRepository.Add(tournament);
+            return _tournamentRepository.UpdateTournament(tournament, id);
         }
     }
 }

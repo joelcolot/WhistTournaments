@@ -111,18 +111,18 @@ namespace WhistTournaments.DAL.Repositories
             {
                 command.CommandText=@"UPDATE TOURNAMENT 
                                       SET [NAME]=@name, [TYPE]=@type, REG_ENDDATE=@reg_enddate, 
-                                        STARTDATE=startdate, NB_PLAYERS=nbplayers, NB_SUBSCRIBED_PLAYERS=nbgames,
-                                        NB_GAMES=(nbplayers/2)-1, ONGOING=@ongoing 
-                                      WHERE [ID]=22";
+                                        STARTDATE=@startdate, NB_PLAYERS=@nbplayers, NB_SUBSCRIBED_PLAYERS=@nbsubscribed,
+                                        NB_GAMES=(@nbplayers/2)-1, ONGOING=@ongoing 
+                                      WHERE [ID]=@id";
 
                 command.Parameters.AddWithValue("@name",tournament.Name);
                 command.Parameters.AddWithValue("@type",tournament.Type);
                 command.Parameters.AddWithValue("@reg_enddate",tournament.RegistrationEndDate);
                 command.Parameters.AddWithValue("@startdate",tournament.StartDate);
                 command.Parameters.AddWithValue("@nbplayers",tournament.NbPlayers);
-                command.Parameters.AddWithValue("@nbgames",tournament.NbGames);
+                command.Parameters.AddWithValue("@nbsubscribed",tournament.NbSubscribedPlayers);
                 command.Parameters.AddWithValue("@ongoing",tournament.OnGoing);
-
+                command.Parameters.AddWithValue("@id",id);
                 connection.Open();
 
                 return (command.ExecuteNonQuery()==1 ? true : false);
