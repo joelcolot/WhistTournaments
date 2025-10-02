@@ -24,6 +24,10 @@ namespace WhistTournaments.Mappers
                 ScorePlayer2 = game.Score2,
                 ScorePlayer3 = game.Score3,
                 ScorePlayer4 = game.Score4,
+                RankingPlayer1 = game.Ranking1,
+                RankingPlayer2 = game.Ranking2,
+                RankingPlayer3 = game.Ranking3,
+                RankingPlayer4 = game.Ranking4,
             };
         }
     }

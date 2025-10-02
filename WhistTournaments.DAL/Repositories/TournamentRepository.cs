@@ -101,7 +101,8 @@ namespace WhistTournaments.DAL.Repositories
                                             PLAYER_3 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NULL THEN @userid ELSE PLAYER_3 END,
                                             PLAYER_4 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NOT NULL AND PLAYER_4 IS NULL THEN @userid ELSE PLAYER_4 END
                                         WHERE TOURNAMENT_ID = @tournamentid
-                                        AND (PLAYER_1 IS NULL OR PLAYER_2 IS NULL OR PLAYER_3 IS NULL OR PLAYER_4 IS NULL);";
+                                        AND (PLAYER_1 IS NULL OR PLAYER_2 IS NULL OR PLAYER_3 IS NULL OR PLAYER_4 IS NULL)
+                                        AND STEP > 3;";
 
                 command.Parameters.AddWithValue("tournamentid", tournament_id);
                 command.Parameters.AddWithValue("userid", user_id);

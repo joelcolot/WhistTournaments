@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Claims;
 using WhistTournaments.BLL.Services;
@@ -52,6 +53,7 @@ namespace WhistTournaments.Controllers
 
         }
 
+        [Authorize]
         public IActionResult Subscribe([FromRoute] int id)
         {
             Tournament? tournament = _tournamentService.GetById(id);
@@ -60,5 +62,12 @@ namespace WhistTournaments.Controllers
 
             return RedirectToAction("Index", "Tournament");
         }
+
+        //[Authorize("Admin")]
+        //public IActionResult InitiateTournament([FromRoute] int id)
+        //{
+            
+
+        //}
     }
 }

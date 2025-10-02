@@ -22,7 +22,7 @@ namespace WhistTournaments.BLL.Services
             return _userRepository.AddUser(user);
         }
 
-        public string GetUsernameById(int id) 
+        public string? GetUsernameById(int? id) 
         {
             string username=_userRepository.GetUsernameById(id);
             Console.WriteLine(username);

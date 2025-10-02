@@ -29,16 +29,22 @@ namespace WhistTournaments.DAL.Repositories
                 return command.ExecuteNonQuery()==1 ? true : false;
             }
         }
-        public string GetUsernameById(int id)
+        public string? GetUsernameById(int? id)
         {
             using(SqlConnection connection = new SqlConnection(_connectionString))
             using(SqlCommand command = connection.CreateCommand())
             {
-                command.CommandText="SELECT [USER_NAME] FROM [USER] WHERE [ID]=@id;";
-                command.Parameters.AddWithValue("@id",id);
-                connection.Open();
-                string username = (string)command.ExecuteScalar();
-                return username;
+                if (id != null)
+                {
+                    command.CommandText = "SELECT [USER_NAME] FROM [USER] WHERE [ID]=@id;";
+                    command.Parameters.AddWithValue("@id", id);
+                    connection.Open();
+                    string username = (string)command.ExecuteScalar();
+                    return username;
+                }
+
+                return null;
+
             }
         }
 
