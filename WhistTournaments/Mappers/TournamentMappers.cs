@@ -16,16 +16,15 @@ namespace WhistTournaments.Mappers
                 Type = tournament.Type,
                 RegEndDate = tournament.RegistrationEndDate,
                 StartDate = tournament.StartDate,
-                NbSubscribedPlayers = tournament.NbSubscribedPlayers,
                 NbPlayers = tournament.NbPlayers,
                 NbMatchs = tournament.NbGames,
                 OnGoing = tournament.OnGoing,
+                NbSubscribedPlayers = tournament.RegisteredPlayers,
             };
         }
 
         public static TournamentDetailDto ToTournamentDetailDto(this Tournament tournament, List<Game> games, UserService userservice)
         {
-            
 
             return new TournamentDetailDto()
             {
@@ -34,7 +33,6 @@ namespace WhistTournaments.Mappers
                 Type = tournament.Type,
                 RegEndDate = tournament.RegistrationEndDate,
                 StartDate = tournament.StartDate,
-                NbSubscribedPlayers = tournament.NbSubscribedPlayers,
                 NbPlayers = tournament.NbPlayers,
                 NbMatchs = tournament.NbGames,
                 OnGoing = tournament.OnGoing,
@@ -53,7 +51,6 @@ namespace WhistTournaments.Mappers
                 Type=tournament.Type,
                 RegistrationEndDate=tournament.RegEndDate,
                 StartDate=tournament.StartDate,
-                NbSubscribedPlayers=tournament.NbSubscribedPlayers,
                 NbPlayers=tournament.NbPlayers,
                 NbGames=tournament.NbMatchs,
                 OnGoing=tournament.OnGoing,

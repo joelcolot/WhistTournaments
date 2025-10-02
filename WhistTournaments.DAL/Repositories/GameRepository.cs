@@ -87,6 +87,15 @@ namespace WhistTournaments.DAL.Repositories
             }
         }
 
+        //public void InitiateGames(int id)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(_connectionstring))
+        //    using (SqlCommand command = connection.CreateCommand())
+        //    {
+        //        command.CommandText = @"
+        //                                INSERT INTO GAME (TOURNAMENT_ID, "
+        //}
+
         public Game MapGame(SqlDataReader reader)
         {
             return new Game()
@@ -108,5 +117,7 @@ namespace WhistTournaments.DAL.Repositories
                 Ranking4 = reader["RANKING_4"] == DBNull.Value ? null : (int)reader["RANKING_4"],
             };
         }
+
+
     }
 }

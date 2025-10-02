@@ -20,9 +20,9 @@ namespace WhistTournaments.DAL.Repositories
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = @"INSERT INTO TOURNAMENT 
-                                        (NAME, TYPE, REG_ENDDATE, STARTDATE, NB_PLAYERS, NB_SUBSCRIBED_PLAYERS,NB_GAMES, ONGOING)
+                                        (NAME, TYPE, REG_ENDDATE, STARTDATE, NB_PLAYERS ,NB_GAMES, ONGOING)
                                         VALUES
-                                        (@name, @type, @reg_enddate, @startdate, @nbplayers, 0, (@nbplayers/2)-1, @ongoing);";
+                                        (@name, @type, @reg_enddate, @startdate, @nbplayers, (@nbplayers/2)-1, @ongoing);";
 
                 command.Parameters.AddWithValue("@name", tournament.Name);
                 command.Parameters.AddWithValue("@type", tournament.Type);
@@ -45,8 +45,13 @@ namespace WhistTournaments.DAL.Repositories
             using (SqlConnection connection = new SqlConnection(_connectionstring))
             using (SqlCommand command = connection.CreateCommand())
             {
-                command.CommandText = @"SELECT * FROM TOURNAMENT
-                                        WHERE ID = @id;";
+                command.CommandText = @"SELECT t.*,
+                                       (
+                                            SELECT COUNT(*) AS cnt
+                                            FROM subscription tu
+                                            WHERE tu.tournament_id = t.id
+                                        ) registeredCount
+                                        FROM TOURNAMENT t WHERE t.id = @id";
 
                 command.Parameters.AddWithValue("id", id);
 
@@ -71,7 +76,13 @@ namespace WhistTournaments.DAL.Repositories
             using (SqlConnection connection = new SqlConnection(_connectionstring))
             using (SqlCommand command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT * FROM TOURNAMENT";
+                command.CommandText = @"SELECT t.*, 
+                                        (
+                                            SELECT COUNT(*) AS cnt
+                                            FROM subscription tu
+                                            WHERE tu.tournament_id = t.id
+                                        ) registeredCount
+                                        FROM tournament t";
 
                 connection.Open();
 
@@ -93,14 +104,17 @@ namespace WhistTournaments.DAL.Repositories
             using (SqlConnection connection = new SqlConnection(_connectionstring))
             using (SqlCommand command = connection.CreateCommand())
             {
-                command.CommandText = @"UPDATE TOP (1) GAME
-                                        SET PLAYER_1 = CASE WHEN PLAYER_1 IS NULL THEN @userid ELSE PLAYER_1 END,
-                                            PLAYER_2 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NULL THEN @userid ELSE PLAYER_2 END,
-                                            PLAYER_3 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NULL THEN @userid ELSE PLAYER_3 END,
-                                            PLAYER_4 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NOT NULL AND PLAYER_4 IS NULL THEN @userid ELSE PLAYER_4 END
-                                        WHERE TOURNAMENT_ID = @tournamentid
-                                        AND (PLAYER_1 IS NULL OR PLAYER_2 IS NULL OR PLAYER_3 IS NULL OR PLAYER_4 IS NULL)
-                                        AND STEP > 3;";
+                //command.CommandText = @"UPDATE TOP (1) GAME
+                //                        SET PLAYER_1 = CASE WHEN PLAYER_1 IS NULL THEN @userid ELSE PLAYER_1 END,
+                //                            PLAYER_2 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NULL THEN @userid ELSE PLAYER_2 END,
+                //                            PLAYER_3 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NULL THEN @userid ELSE PLAYER_3 END,
+                //                            PLAYER_4 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NOT NULL AND PLAYER_4 IS NULL THEN @userid ELSE PLAYER_4 END
+                //                        WHERE TOURNAMENT_ID = @tournamentid
+                //                        AND (PLAYER_1 IS NULL OR PLAYER_2 IS NULL OR PLAYER_3 IS NULL OR PLAYER_4 IS NULL)
+                //                        AND STEP > 3;";
+                command.CommandText = @"INSERT INTO SUBSCRIPTION (TOURNAMENT_ID, USER_ID)
+                                        VALUES (@tournamentid, @userid);";
+                                        
 
                 command.Parameters.AddWithValue("tournamentid", tournament_id);
                 command.Parameters.AddWithValue("userid", user_id);
@@ -114,6 +128,97 @@ namespace WhistTournaments.DAL.Repositories
             }
         }
 
+        public int GetCountSubscribedPlayersByTournamentId(int tournamentid)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"SELECT COUNT(*) FROM SUBSCRIPTION tu WHERE TOURNAMENT_ID = @id;";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
+
+                connection.Open();
+
+                return (int)command.ExecuteScalar();
+            }
+        }
+
+        public List<int> GetAllSubscribedPlayersByTournamentId(int tournamentid)
+        {
+            List<int> players = new List<int>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"SELECT TOP 16 USER_ID FROM SUBSCRIPTION
+                                        WHERE TOURNAMENT_ID = @id;";
+
+                command.Parameters.AddWithValue("id", tournamentid);
+
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        players.Add((int)reader["USER_ID"]);
+
+                    }
+
+                    return players;
+                }
+            }
+        }
+
+        public void InitiateGame(int tournamentid, int step)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"INSERT INTO GAME (
+                                       TOURNAMENT_ID, STEP, PLAYER_1, PLAYER_2, PLAYER_3, PLAYER_4, 
+                                       SCORE_1, SCORE_2, SCORE_3, SCORE_4,
+                                       RANKING_1, RANKING_2, RANKING_3, RANKING_4)
+                                       VALUES(@tournamentid, @step, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
+                command.Parameters.AddWithValue("step", step);
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+
+            }
+        }
+
+        public void InitiateGame(int tournamentid, int step, int player1, int player2, int player3, int player4)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"INSERT INTO GAME (
+                                       TOURNAMENT_ID, STEP, PLAYER_1, PLAYER_2, PLAYER_3, PLAYER_4, 
+                                       SCORE_1, SCORE_2, SCORE_3, SCORE_4,
+                                       RANKING_1, RANKING_2, RANKING_3, RANKING_4)
+                                       VALUES(@tournamentid, @step, @player1, @player2, @player3, @player4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
+                command.Parameters.AddWithValue("step", step);
+                command.Parameters.AddWithValue("player1", player1);
+                command.Parameters.AddWithValue("player2", player2);
+                command.Parameters.AddWithValue("player3", player3);
+                command.Parameters.AddWithValue("player4", player4);
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+
+            }
+        }
         public Tournament MapTournament(SqlDataReader reader)
         {
             return new Tournament()
@@ -123,10 +228,10 @@ namespace WhistTournaments.DAL.Repositories
                 Type = (Type_Tournament)reader["TYPE"],
                 RegistrationEndDate = (DateTime)reader["REG_ENDDATE"],
                 StartDate = (DateTime)reader["STARTDATE"],
-                NbSubscribedPlayers = (int)reader["NB_SUBSCRIBED_PLAYERS"],
                 NbPlayers = (int)reader["NB_PLAYERS"],
                 NbGames = (int)reader["NB_GAMES"],
                 OnGoing = (bool)reader["ONGOING"],
+                RegisteredPlayers = (int)reader["registeredCount"],
             };
         }
 
@@ -146,7 +251,6 @@ namespace WhistTournaments.DAL.Repositories
                 command.Parameters.AddWithValue("@reg_enddate",tournament.RegistrationEndDate);
                 command.Parameters.AddWithValue("@startdate",tournament.StartDate);
                 command.Parameters.AddWithValue("@nbplayers",tournament.NbPlayers);
-                command.Parameters.AddWithValue("@nbsubscribed",tournament.NbSubscribedPlayers);
                 command.Parameters.AddWithValue("@ongoing",tournament.OnGoing);
                 command.Parameters.AddWithValue("@id",id);
                 connection.Open();

@@ -91,7 +91,15 @@
                         asp-route-id="@item.Id">
                         Update
                     </a>
-                
+                    @if (item.NbSubscribedPlayers == item.NbPlayers && !item.OnGoing)
+                    {
+                        <a class="btn btn-danger"
+                           asp-controller="Tournament"
+                           asp-action="InitiateTournament"
+                           asp-route-id="@item.Id">
+                            Initiate Tournament
+                        </a>
+                    }
             </td>
         </tr>
 }

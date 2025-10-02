@@ -76,9 +76,16 @@ namespace WhistTournaments.Controllers
         [Authorize]
         public IActionResult Subscribe([FromRoute] int id)
         {
-            Tournament? tournament = _tournamentService.GetById(id);
+            Tournament tournament = _tournamentService.GetById(id);
 
-            _tournamentService.SubscribeToTournament(id, User.GetId());
+            if (tournament.RegisteredPlayers < tournament.NbPlayers)
+            {
+                _tournamentService.SubscribeToTournament(id, User.GetId());
+            }
+            else
+            {
+                throw new Exception("Le tournoi ne peut plus accepter de nouveau joueurs.");
+            }
 
             return RedirectToAction("Index", "Tournament");
         }
@@ -91,7 +98,7 @@ namespace WhistTournaments.Controllers
             games=_gameService.GetAllGamesByTournamentId(id);
 //            if(games.Count!=0) 
 //            {
-                tournament = _tournamentService.GetById(id)!.ToTournamentDetailDto(games);
+                tournament = _tournamentService.GetById(id)!.ToTournamentDetailDto(games, _userService);
 //            }
             Console.WriteLine("id="+id);
             return View(tournament);
@@ -109,12 +116,24 @@ namespace WhistTournaments.Controllers
             Console.WriteLine("id="+id);
             throw new Exception();
         }
-        
-        //[Authorize("Admin")]
-        //public IActionResult InitiateTournament([FromRoute] int id)
-        //{
-            
 
-        //}
+        [Authorize(Roles = "Admin")]
+        public IActionResult InitiateTournament([FromRoute] int id)
+        {
+            Tournament tournament = _tournamentService.GetById(id);
+
+            tournament.OnGoing = true;
+
+            if (tournament is null) throw new Exception("Erreur : pas de tournoi");
+
+            if (tournament.RegisteredPlayers == tournament.NbPlayers)
+            {
+                _tournamentService.InitiateGames(id);
+
+                
+            }
+
+            return RedirectToAction("Index", "Tournament");
+        }
     }
 }
