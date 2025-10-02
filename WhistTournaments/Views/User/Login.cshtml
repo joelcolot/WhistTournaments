@@ -16,3 +16,10 @@
     </div>
     <button type="submit">Login</button>
 </form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -18,10 +18,11 @@ namespace WhistTournaments.Models.Tournaments
         public Type_Tournament Type { get; set; }
 
         [DisplayName("Fin des Inscriptions")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}",ApplyFormatInEditMode = true)]
         public DateTime RegEndDate { get; set; }
 
         [DisplayName("Date et heure de début")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}",ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}",ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
         [DisplayName("Nombre de Joueurs Inscrits")]

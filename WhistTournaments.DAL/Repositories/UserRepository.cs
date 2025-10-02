@@ -83,6 +83,8 @@ namespace WhistTournaments.DAL.Repositories
                 {
                     user.Id = (int)reader["Id"];
                     user.UserName=(string)reader["user_name"];
+                    user.FirstName=(string)reader["first_name"];
+                    user.LastName=(string)reader["name"];
                     user.Email=(string)reader["Email"];
                     user.Gender=(Gender)reader["gender"];
                     user.Role=(Role)reader["role"];

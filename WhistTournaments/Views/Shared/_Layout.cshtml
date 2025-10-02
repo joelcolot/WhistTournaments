@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WhistTournaments.Extensions
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,7 +30,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="FindUser">Find user</a>
                         </li>
-                        @if(!User.Identity.IsAuthenticated)
+                        @if(!User.IsConnected())
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-danger" asp-area="" asp-controller="User" asp-action="Register">Sign in!</a>
@@ -41,7 +42,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Account">Your account</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="OwnAccount">Your account</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>

@@ -1,10 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using WhistTournaments.DL.Entities;
 using WhistTournaments.DL.Enums;
 
@@ -20,9 +14,9 @@ namespace WhistTournaments.DAL.Repositories
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = @"INSERT INTO TOURNAMENT 
-                                        (NAME, TYPE, REG_ENDDATE, STARTDATE, NB_PLAYERS, NB_SUBSCRIBED_PLAYERS,NB_GAMES, ONGOING)
+                                        (NAME, TYPE, REG_ENDDATE, STARTDATE, NB_PLAYERS, NB_GAMES, ONGOING)
                                         VALUES
-                                        (@name, @type, @reg_enddate, @startdate, @nbplayers, 0, (@nbplayers/2)-1, @ongoing);";
+                                        (@name, @type, @reg_enddate, @startdate, @nbplayers, (@nbplayers/2)-1, @ongoing);";
 
                 command.Parameters.AddWithValue("@name", tournament.Name);
                 command.Parameters.AddWithValue("@type", tournament.Type);
@@ -123,7 +117,6 @@ namespace WhistTournaments.DAL.Repositories
                 Type = (Type_Tournament)reader["TYPE"],
                 RegistrationEndDate = (DateTime)reader["REG_ENDDATE"],
                 StartDate = (DateTime)reader["STARTDATE"],
-                NbSubscribedPlayers = (int)reader["NB_SUBSCRIBED_PLAYERS"],
                 NbPlayers = (int)reader["NB_PLAYERS"],
                 NbGames = (int)reader["NB_GAMES"],
                 OnGoing = (bool)reader["ONGOING"],

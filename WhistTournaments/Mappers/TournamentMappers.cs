@@ -26,7 +26,6 @@ namespace WhistTournaments.Mappers
         public static TournamentDetailDto ToTournamentDetailDto(this Tournament tournament, List<Game> games, UserService userservice)
         {
             
-
             return new TournamentDetailDto()
             {
                 Id = tournament.Id,
@@ -41,6 +40,23 @@ namespace WhistTournaments.Mappers
                 gameDtos = games
                     .Select(g => g.ToGameDto(userservice))
                     .ToList()
+            };
+        }
+
+        public static TournamentDetailDto ToTournamentDetailDto(this Tournament tournament,List<Game> games)        //  Without games initialized
+        {
+
+            return new TournamentDetailDto()
+            {
+                Id=tournament.Id,
+                Name=tournament.Name,
+                Type=tournament.Type,
+                RegEndDate=tournament.RegistrationEndDate,
+                StartDate=tournament.StartDate,
+                NbSubscribedPlayers=tournament.NbSubscribedPlayers,
+                NbPlayers=tournament.NbPlayers,
+                NbMatchs=tournament.NbGames,
+                OnGoing=tournament.OnGoing,
             };
         }
 
