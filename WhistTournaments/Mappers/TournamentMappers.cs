@@ -16,10 +16,10 @@ namespace WhistTournaments.Mappers
                 Type = tournament.Type,
                 RegEndDate = tournament.RegistrationEndDate,
                 StartDate = tournament.StartDate,
-                NbSubscribedPlayers = tournament.NbSubscribedPlayers,
                 NbPlayers = tournament.NbPlayers,
                 NbMatchs = tournament.NbGames,
                 OnGoing = tournament.OnGoing,
+                NbSubscribedPlayers = tournament.RegisteredPlayers,
             };
         }
 
@@ -33,7 +33,6 @@ namespace WhistTournaments.Mappers
                 Type = tournament.Type,
                 RegEndDate = tournament.RegistrationEndDate,
                 StartDate = tournament.StartDate,
-                NbSubscribedPlayers = tournament.NbSubscribedPlayers,
                 NbPlayers = tournament.NbPlayers,
                 NbMatchs = tournament.NbGames,
                 OnGoing = tournament.OnGoing,
@@ -69,7 +68,6 @@ namespace WhistTournaments.Mappers
                 Type=tournament.Type,
                 RegistrationEndDate=tournament.RegEndDate,
                 StartDate=tournament.StartDate,
-                NbSubscribedPlayers=tournament.NbSubscribedPlayers,
                 NbPlayers=tournament.NbPlayers,
                 NbGames=tournament.NbMatchs,
                 OnGoing=tournament.OnGoing,

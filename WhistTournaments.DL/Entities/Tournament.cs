@@ -19,7 +19,7 @@ namespace WhistTournaments.DL.Entities
 
         public DateTime StartDate { get; set; }
 
-        public int NbSubscribedPlayers { get; set; } 
+        public int RegisteredPlayers { get; set; }
 
         public int NbPlayers { get; set; }
 
@@ -28,5 +28,7 @@ namespace WhistTournaments.DL.Entities
         public bool OnGoing { get; set; } = false;
 
         public List<Game> Games { get; set; } = null!;
+
+
     }
 }

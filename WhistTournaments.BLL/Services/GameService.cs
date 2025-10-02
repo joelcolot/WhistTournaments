@@ -21,5 +21,7 @@ namespace WhistTournaments.BLL.Services
         {
             return _gameRepository.GetAllGamesByTournamentId(id);
         }
+
+
     }
 }
