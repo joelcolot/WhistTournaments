@@ -1,5 +1,6 @@
 ﻿@using WhistTournaments.Extensions
 @using WhistTournaments.Models.Tournaments
+@using WhistTournaments.DL.Enums
 @model IEnumerable<WhistTournaments.Models.Tournaments.TournamentIndexDto>
 
 @{
@@ -104,6 +105,10 @@
                     @if (item.NbSubscribedPlayers == item.NbPlayers && User.IsAdmin() && !item.OnGoing)
                     {
                         <a class="btn btn-success" asp-controller="Tournament" asp-action="InitiateTournament" asp-route-id="@item.Id">Initiate</a>
+                    }
+                    @if (User.IsAdmin() && (item.Step == Step.Tour1 || item.Step == Step.DemiFinale || item.Step == Step.Finale))
+                    {
+                        <a class="btn btn-success" asp-controller="Tournament" asp-action="WriteResults" asp-route-id="@item.Id">Encoder Tour 1</a>
                     }
                     @if (item.NbSubscribedPlayers < item.NbPlayers && User.IsConnected() && !item.IsUserSubscribed && !item.OnGoing)
                     {

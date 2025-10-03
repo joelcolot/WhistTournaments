@@ -29,10 +29,31 @@ namespace WhistTournaments.BLL.Services
             int step = _gameRepository.GetStepFromTournamentId(tournamentid);
 
             return (Step)step;
-
-
         }
 
+        //public void WriteResults(int tournamentid, int step)
+        //{
+        //    if (step == 1)
+        //    {
+        //        _gameRepository.WriteResults
+        //    }
+
+        //}
+
+        public List<Game> GetGamesTour1(int tournamentid)
+        {
+            return _gameRepository.GetGamesTour1(tournamentid);
+        }
+
+        public List<Game> GetGamesSemiFinals(int tournamentid)
+        {
+            return _gameRepository.GetGamesSemiFinals(tournamentid);
+        }
+
+        public Game GetGameFinal(int tournamentid)
+        {
+            return _gameRepository.GetGameFinal(tournamentid);
+        }
 
 
     }

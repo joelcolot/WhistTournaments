@@ -151,6 +151,89 @@ namespace WhistTournaments.DAL.Repositories
             }
         }
 
+        public List<Game> GetGamesTour1(int tournamentid)
+        {
+            List<Game> games = [];
+
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"SELECT * FROM GAME
+                                        WHERE TOURNAMENT_ID = @tournamentid AND STEP IN (7,6,5,4);";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    games.Add(MapGame(reader));
+                }
+
+                connection.Close();
+            }
+
+            return games;
+
+        }
+
+        public List<Game> GetGamesSemiFinals(int tournamentid)
+        {
+            List<Game> games = [];
+
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"SELECT * FROM GAME
+                                        WHERE TOURNAMENT_ID = @tournamentid AND STEP IN (3,2);";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    games.Add(MapGame(reader));
+                }
+
+                connection.Close();
+            }
+
+            return games;
+
+        }
+
+        public Game GetGameFinal(int tournamentid)
+        {
+            Game game = new();
+
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"SELECT * FROM GAME
+                                        WHERE TOURNAMENT_ID = @tournamentid AND STEP = 1";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    game = MapGame(reader);
+                }
+
+                connection.Close();
+            }
+
+            return game;
+        }
+
         public Game MapGame(SqlDataReader reader)
         {
             return new Game()

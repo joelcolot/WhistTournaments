@@ -9,6 +9,7 @@ using WhistTournaments.DL.Entities;
 using WhistTournaments.DL.Enums;
 using WhistTournaments.Extensions;
 using WhistTournaments.Mappers;
+using WhistTournaments.Models.Games;
 using WhistTournaments.Models.Tournaments;
 
 namespace WhistTournaments.Controllers
@@ -61,7 +62,7 @@ namespace WhistTournaments.Controllers
                         {
                             dto.Step = _gameService.GetStepFromTournamentId(t.Id);
                         }
-                            
+
                         return dto;
                     })
                     .ToList();
@@ -99,27 +100,27 @@ namespace WhistTournaments.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult CreateTournament() 
+        public IActionResult CreateTournament()
         {
             return View(new TournamentDetailDto());
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult CreateTournament([FromForm] TournamentDetailDto tournament) 
+        public IActionResult CreateTournament([FromForm] TournamentDetailDto tournament)
         {
-            if(!_tournamentService.AddTournament(tournament.FromTournamentDetailDto())) 
+            if (!_tournamentService.AddTournament(tournament.FromTournamentDetailDto()))
             {
                 throw new Exception();
             }
-            
+
             return RedirectToAction("Index", "Tournament");
         }
-        
+
         [Authorize]
         public IActionResult Subscribe([FromRoute] int id)
         {
-      
+
             try
             {
                 _tournamentService.SubscribeToTournament(id, User.GetId());
@@ -152,32 +153,32 @@ namespace WhistTournaments.Controllers
             return RedirectToAction("Index", "Tournament");
 
         }
-            [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("/tournament/update/{id}")]
-        public IActionResult UpdateTournament([FromRoute] int id) 
+        public IActionResult UpdateTournament([FromRoute] int id)
         {
-             TournamentDetailDto tournament=new TournamentDetailDto();
+            TournamentDetailDto tournament = new TournamentDetailDto();
             List<Game> games = new List<Game>();
-            games=_gameService.GetAllGamesByTournamentId(id);
-//            if(games.Count!=0) 
-//            {
-                tournament = _tournamentService.GetById(id)!.ToTournamentDetailDto(games, _userService);
-//            }
-            Console.WriteLine("id="+id);
+            games = _gameService.GetAllGamesByTournamentId(id);
+            //            if(games.Count!=0) 
+            //            {
+            tournament = _tournamentService.GetById(id)!.ToTournamentDetailDto(games, _userService);
+            //            }
+            Console.WriteLine("id=" + id);
             return View(tournament);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost("/tournament/update/{id}")]
-        public IActionResult UpdateTournament([FromForm] TournamentDetailDto tournament,[FromRoute] int id) 
+        public IActionResult UpdateTournament([FromForm] TournamentDetailDto tournament, [FromRoute] int id)
         {
             //int id = tournament.Id;
-            Console.WriteLine("id="+id);
-            if(_tournamentService.UpdateTournament(tournament.FromTournamentDetailDto(),id)) 
+            Console.WriteLine("id=" + id);
+            if (_tournamentService.UpdateTournament(tournament.FromTournamentDetailDto(), id))
             {
-                return RedirectToAction("Index","tournament");
+                return RedirectToAction("Index", "tournament");
             }
-            Console.WriteLine("id="+id);
+            Console.WriteLine("id=" + id);
             throw new Exception();
         }
 
@@ -188,7 +189,7 @@ namespace WhistTournaments.Controllers
 
             if (tournament is null) throw new Exception("Erreur : pas de tournoi");
 
-            if (tournament.RegisteredPlayers == tournament.NbPlayers )
+            if (tournament.RegisteredPlayers == tournament.NbPlayers)
             {
                 _tournamentService.InitiateGames(id);
 
@@ -197,15 +198,62 @@ namespace WhistTournaments.Controllers
             return RedirectToAction("Index", "Tournament");
         }
 
+        [Authorize(Roles = "Admin")]
+
+        [HttpGet]
+        public IActionResult WriteResults([FromRoute] int id)
+        {
+
+            Step step = _gameService.GetStepFromTournamentId(id);
+
+            if (step == Step.Tour1)
+            {
+                List<Game> games = _gameService.GetGamesTour1(id);
+
+                List<GameResultDto> dtos = games
+                    .Select(g => g.ToGameResultDto(_userService))
+                    .ToList();
+
+                return View(dtos);
+            }
+            else if (step == Step.DemiFinale)
+            {
+                List<Game> games = _gameService.GetGamesSemiFinals(id);
+
+                List<GameResultDto> dtos = games
+                    .Select(g => g.ToGameResultDto(_userService))
+                    .ToList();
+
+                return View(dtos);
+            }
+            else if (step == Step.Finale)
+            {
+                Game game = _gameService.GetGameFinal(id);
+
+                GameResultDto dto = game.ToGameResultDto(_userService);
+
+                return View(dto);
+
+            }
+
+            return View();
+        }
+
         //[Authorize(Roles = "Admin")]
-
-        //public IActionResult WriteResults([FromRoute] int id)
+        //[HttpPost]
+        //public IActionResult WriteResults([FromForm] List<GameResultDto> dtos)
         //{
-            
+        //    List<Game> games = dtos
+        //        .Select(d => d.ToGame(_userService))
+        //        .ToList();
 
-        //    _tournamentService.GetStepFromTournamentId(id);
 
+        //    foreach (var game in games)
+        //    {
+        //        game.
+        //    }
 
+        //    return RedirectToAction("Index", "Tournament");
         //}
     }
 }
