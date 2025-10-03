@@ -8,6 +8,27 @@
 
 <h1>Index</h1>
 
+@if (TempData["FullTournamentError"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["FullTournamentError"]
+    </div>
+}
+
+@if (TempData["AlreadySubscribedError"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["AlreadySubscribedError"]
+    </div>
+}
+
+@if (TempData["NotSubscribedError"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["NotSubscribedError"]
+    </div>
+}
+
 @if(User.IsAdmin())
 {
 <p>
@@ -72,43 +93,31 @@
             <td>
                 @Html.DisplayFor(modelItem => item.OnGoing)
             </td>
+
             <td>
-                
-                    <a class="btn btn-warning"
-                       asp-controller="Tournament"
-                       asp-action="Details"
-                       asp-route-id="@item.Id">
-                        Détails
-                    </a>
-                    @if (item.NbSubscribedPlayers < item.NbPlayers && User.IsConnected())
+                <div class="btn-group" role="group">
+                    <a class="btn btn-warning" asp-controller="Tournament" asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                    @if (User.IsAdmin() && && !item.OnGoing)
                     {
-                        <a class="btn btn-sm btn-primary"
-                        asp-controller="Tournament"
-                        asp-action="Subscribe"
-                        asp-route-id="@item.Id">
-                            S'inscrire
-                        </a>
+                        <a class="btn btn-danger" asp-controller="Tournament" asp-action="Update" asp-route-id="@item.Id">Update</a>
+                    }
+                    @if (item.NbSubscribedPlayers == item.NbPlayers && User.IsAdmin() && !item.OnGoing)
+                    {
+                        <a class="btn btn-success" asp-controller="Tournament" asp-action="InitiateTournament" asp-route-id="@item.Id">Initiate</a>
+                    }
+                    @if (item.NbSubscribedPlayers < item.NbPlayers && User.IsConnected() && !item.IsUserSubscribed && !item.OnGoing)
+                    {
+                        <a class="btn btn-success" asp-controller="Tournament" asp-action="Subscribe" asp-route-id="@item.Id">S'inscrire</a>
+                    }
+                    @if (item.IsUserSubscribed && !item.OnGoing)
+                    {
+                        <button class="btn btn-secondary btn-sm" disabled>Déjà inscrit</button>
+                         <a class="btn btn-sm btn-primary" asp-controller="Tournament" asp-action="Unsubscribe" asp-route-id="@item.Id">Se désinscrire</a>
                     }
 
-                    @if (User.IsAdmin())
-                    {
-                        <a class="btn btn-danger"
-                        asp-controller="Tournament"
-                        asp-action="Update"
-                        asp-route-id="@item.Id">
-                            Update
-                        </a>
-                    }
-                    @if (item.NbSubscribedPlayers == item.NbPlayers && !item.OnGoing)
-                    {
-                        <a class="btn btn-danger"
-                           asp-controller="Tournament"
-                           asp-action="InitiateTournament"
-                           asp-route-id="@item.Id">
-                            Initiate Tournament
-                        </a>
-                    }
+                </div>
             </td>
+
         </tr>
 }
     </tbody>

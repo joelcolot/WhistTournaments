@@ -11,7 +11,9 @@ namespace WhistTournaments.DAL.Repositories
 {
     public class GameRepository
     {
-        private string _connectionstring = "server=10.2.28.135;database=WhistDB;uid=sa;pwd=test1234=;trustServerCertificate=true";
+        //private string _connectionstring = "server=10.2.28.135;database=WhistDB;uid=sa;pwd=test1234=;trustServerCertificate=true";
+        private readonly string _connectionstring = "Server=(localdb)\\MSSQLLocalDB;Database=WhistDB;Trusted_Connection=True;";
+
 
         public List<Game> GetAllGamesByTournamentId(int id)
         {

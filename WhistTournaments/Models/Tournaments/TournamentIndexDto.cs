@@ -39,5 +39,7 @@ namespace WhistTournaments.Models.Tournaments
         [DisplayName("En Cours")]
 
         public bool OnGoing { get; set; }
+
+        public bool IsUserSubscribed { get; set; }
     }
 }

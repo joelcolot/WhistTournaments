@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WhistTournaments.BLL.Exceptions;
 using WhistTournaments.DAL.Repositories;
 using WhistTournaments.DL.Entities;
 
@@ -44,9 +45,40 @@ namespace WhistTournaments.BLL.Services
             return _tournamentRepository.UpdateTournament(tournament, id);
         }
 
-        public void SubscribeToTournament(int tournament_id, int user_id)
+        public void SubscribeToTournament(int tournamentid, int userid)
         {
-            _tournamentRepository.SubscribeToTournament(tournament_id, user_id);
+            Tournament tournament = _tournamentRepository.GetById(tournamentid);
+
+            if (tournament.RegisteredPlayers >= tournament.NbPlayers )
+            {
+                throw new FullTournamentException();
+            }
+            else if (_tournamentRepository.ExistByUserIdinTournament(tournamentid, userid))
+            {
+                throw new AlreadySubscribedException();
+            }
+            else
+            {
+                _tournamentRepository.SubscribeToTournament(tournamentid, userid);
+            }
+        }
+
+        public void UnsubscribeToTournament(int tournamentid, int userid)
+        {
+            if (_tournamentRepository.ExistByUserIdinTournament(tournamentid, userid))
+            {
+                _tournamentRepository.UnsubscribeToTournament(tournamentid, userid);
+            }
+            else
+            {
+                throw new NotSubscribedException();
+            }
+
+        }
+
+        public bool ExistByUserIdinTournament(int tournamentid, int? userid)
+        {
+            return _tournamentRepository.ExistByUserIdinTournament(tournamentid, userid);
         }
 
         public int GetCountSubscribedPlayersByTournamentId(int tournamentid)
@@ -85,6 +117,9 @@ namespace WhistTournaments.BLL.Services
 
                 _tournamentRepository.InitiateGame(id, step, player1, player2, player3, player4);
             }
+
+            //On met le tournoi en cours
+            _tournamentRepository.SetOnGoingTournament(id);
 
 
         }

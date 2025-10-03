@@ -6,7 +6,9 @@ namespace WhistTournaments.DAL.Repositories
 {
     public  class TournamentRepository
     {
-        private string _connectionstring = "server=10.2.28.135;database=WhistDB;uid=sa;pwd=test1234=;trustServerCertificate=true";
+        //private string _connectionstring = "server=10.2.28.135;database=WhistDB;uid=sa;pwd=test1234=;trustServerCertificate=true";
+        private string _connectionstring = "Server=(localdb)\\MSSQLLocalDB;Database=WhistDB;Trusted_Connection=True;";
+
 
         public bool Add(Tournament tournament)
         {
@@ -98,14 +100,7 @@ namespace WhistTournaments.DAL.Repositories
             using (SqlConnection connection = new SqlConnection(_connectionstring))
             using (SqlCommand command = connection.CreateCommand())
             {
-                //command.CommandText = @"UPDATE TOP (1) GAME
-                //                        SET PLAYER_1 = CASE WHEN PLAYER_1 IS NULL THEN @userid ELSE PLAYER_1 END,
-                //                            PLAYER_2 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NULL THEN @userid ELSE PLAYER_2 END,
-                //                            PLAYER_3 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NULL THEN @userid ELSE PLAYER_3 END,
-                //                            PLAYER_4 = CASE WHEN PLAYER_1 IS NOT NULL AND PLAYER_2 IS NOT NULL AND PLAYER_3 IS NOT NULL AND PLAYER_4 IS NULL THEN @userid ELSE PLAYER_4 END
-                //                        WHERE TOURNAMENT_ID = @tournamentid
-                //                        AND (PLAYER_1 IS NULL OR PLAYER_2 IS NULL OR PLAYER_3 IS NULL OR PLAYER_4 IS NULL)
-                //                        AND STEP > 3;";
+
                 command.CommandText = @"INSERT INTO SUBSCRIPTION (TOURNAMENT_ID, USER_ID)
                                         VALUES (@tournamentid, @userid);";
                                         
@@ -119,6 +114,47 @@ namespace WhistTournaments.DAL.Repositories
 
                 connection.Close();
 
+            }
+        }
+
+        public void UnsubscribeToTournament(int tournament_id, int user_id)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+
+                command.CommandText = @"DELETE FROM SUBSCRIPTION
+                                        WHERE TOURNAMENT_ID = @tournamentid AND USER_ID = @userid;";
+
+                command.Parameters.AddWithValue("tournamentid", tournament_id);
+                command.Parameters.AddWithValue("userid", user_id);
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+
+        public bool ExistByUserIdinTournament(int tournamentid, int? userid)
+        {
+
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"
+                                    SELECT CAST(
+                                    CASE WHEN EXISTS (SELECT 1 FROM SUBSCRIPTION WHERE TOURNAMENT_ID = @tournamentid AND
+                                    USER_ID = @userid) THEN 1 ELSE 0 END
+                                    AS BIT) AS IsExisting;";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
+                command.Parameters.AddWithValue("userid", userid);
+
+                connection.Open();
+
+                return (bool)command.ExecuteScalar();
             }
         }
 
@@ -204,6 +240,25 @@ namespace WhistTournaments.DAL.Repositories
                 command.Parameters.AddWithValue("player2", player2);
                 command.Parameters.AddWithValue("player3", player3);
                 command.Parameters.AddWithValue("player4", player4);
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+
+            }
+        }
+
+        public void SetOnGoingTournament(int tournamentid)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"UPDATE TOURNAMENT SET ONGOING = 1
+                                        WHERE ID = @tournamentid;";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
 
                 connection.Open();
 

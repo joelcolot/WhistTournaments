@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Claims;
+using WhistTournaments.BLL.Exceptions;
 using WhistTournaments.BLL.Services;
+using WhistTournaments.DAL.Repositories;
 using WhistTournaments.DL.Entities;
 using WhistTournaments.Extensions;
 using WhistTournaments.Mappers;
@@ -24,15 +26,47 @@ namespace WhistTournaments.Controllers
         }
 
 
+        //public IActionResult Index()
+        //{
+        //    List<Tournament> tournaments = _tournamentService.GetAll();
+        //    //  Add the nb of already subscribed players.
+        //    List<TournamentIndexDto> dtos = tournaments
+        //        .Select(t => t.ToTournamentIndexDto())
+        //        .ToList();
+
+
+        //    return View(dtos);
+        //}
 
         public IActionResult Index()
         {
-            List<Tournament> tournaments = _tournamentService.GetAll();
-            //  Add the nb of already subscribed players.
-            List<TournamentIndexDto> dtos = tournaments
-                .Select(t => t.ToTournamentIndexDto())
-                .ToList();
-            
+            var tournaments = _tournamentService.GetAll();
+            List<TournamentIndexDto> dtos;
+
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                int userId = User.GetId();
+
+                dtos = tournaments
+                    .Select(t =>
+                    {
+                        var dto = t.ToTournamentIndexDto();
+                        dto.IsUserSubscribed = _tournamentService.ExistByUserIdinTournament(t.Id, userId);
+                        return dto;
+                    })
+                    .ToList();
+            }
+            else
+            {
+                dtos = tournaments
+                    .Select(t =>
+                    {
+                        var dto = t.ToTournamentIndexDto();
+                        dto.IsUserSubscribed = false;
+                        return dto;
+                    })
+                    .ToList();
+            }
 
             return View(dtos);
         }
@@ -75,21 +109,40 @@ namespace WhistTournaments.Controllers
         [Authorize]
         public IActionResult Subscribe([FromRoute] int id)
         {
-            Tournament tournament = _tournamentService.GetById(id);
-
-            if (tournament.RegisteredPlayers < tournament.NbPlayers)
+      
+            try
             {
                 _tournamentService.SubscribeToTournament(id, User.GetId());
             }
-            else
+            catch (FullTournamentException ex)
             {
-                throw new Exception("Le tournoi ne peut plus accepter de nouveau joueurs.");
+                TempData["FullTournamentError"] = "Erreur : plus de places disponibles dans le tournoi.";
             }
+            catch (AlreadySubscribedException ex)
+            {
+                TempData["AlreadySubscribedError"] = "Erreur : vous êtes déjà inscrit(e) à ce tournoi.";
+            }
+
 
             return RedirectToAction("Index", "Tournament");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
+        public IActionResult Unsubscribe([FromRoute] int id)
+        {
+            try
+            {
+                _tournamentService.UnsubscribeToTournament(id, User.GetId());
+            }
+            catch (NotSubscribedException ex)
+            {
+                TempData["NotSubscribedError"] = "Erreur : Vous n'êtes pas inscrit(e) à ce tournoi.";
+            }
+
+            return RedirectToAction("Index", "Tournament");
+
+        }
+            [Authorize(Roles = "Admin")]
         [HttpGet("/tournament/update/{id}")]
         public IActionResult UpdateTournament([FromRoute] int id) 
         {
@@ -123,11 +176,9 @@ namespace WhistTournaments.Controllers
         {
             Tournament tournament = _tournamentService.GetById(id);
 
-            tournament.OnGoing = true;
-
             if (tournament is null) throw new Exception("Erreur : pas de tournoi");
 
-            if (tournament.RegisteredPlayers == tournament.NbPlayers)
+            if (tournament.RegisteredPlayers == tournament.NbPlayers )
             {
                 _tournamentService.InitiateGames(id);
 

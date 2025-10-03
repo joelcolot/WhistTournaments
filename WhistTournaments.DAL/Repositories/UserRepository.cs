@@ -11,11 +11,12 @@ namespace WhistTournaments.DAL.Repositories
 {
     public class UserRepository
     {
-        private readonly string _connectionString = "server=10.2.28.135;database=WhistDB;uid=sa;pwd=test1234=;TrustServerCertificate=true";
+        //private string _connectionstring = "server=10.2.28.135;database=WhistDB;uid=sa;pwd=test1234=;trustServerCertificate=true";
+        private string _connectionstring = "Server=(localdb)\\MSSQLLocalDB;Database=WhistDB;Trusted_Connection=True;";
 
         public bool AddUser(User user) 
         {
-            using(SqlConnection connection = new SqlConnection(_connectionString))
+            using(SqlConnection connection = new SqlConnection(_connectionstring))
             using(SqlCommand command = connection.CreateCommand()) 
             {
                 command.CommandText="INSERT INTO [USER] ([NAME], [FIRST_NAME], [USER_NAME], [PASSWORD], [EMAIL], [GENDER], [ROLE]) VALUES (@firstname, @lastname, @username, @password, @email, @gender, 1)";
@@ -31,7 +32,7 @@ namespace WhistTournaments.DAL.Repositories
         }
         public string? GetUsernameById(int? id)
         {
-            using(SqlConnection connection = new SqlConnection(_connectionString))
+            using(SqlConnection connection = new SqlConnection(_connectionstring))
             using(SqlCommand command = connection.CreateCommand())
             {
                 if (id != null)
@@ -51,7 +52,7 @@ namespace WhistTournaments.DAL.Repositories
         public User GetUserById(int id)
         {
             User user = new User();
-            using(SqlConnection connection = new SqlConnection(_connectionString))
+            using(SqlConnection connection = new SqlConnection(_connectionstring))
             using(SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText="SELECT * FROM [USER] WHERE [ID]=@id;";
@@ -72,7 +73,7 @@ namespace WhistTournaments.DAL.Repositories
         public User? GetUserByUsername(string username)
         {
             User? user = new User();
-            using(SqlConnection connection = new SqlConnection(_connectionString))
+            using(SqlConnection connection = new SqlConnection(_connectionstring))
             using(SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText="SELECT * FROM [USER] WHERE [USER_NAME]=@username;";
