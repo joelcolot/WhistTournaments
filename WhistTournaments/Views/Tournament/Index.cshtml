@@ -61,7 +61,7 @@
                 @Html.DisplayNameFor(model => model.NbMatchs)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OnGoing)
+                @Html.DisplayNameFor(model => model.Step)
             </th>
             <th></th>
         </tr>
@@ -91,13 +91,13 @@
                 @Html.DisplayFor(modelItem => item.NbMatchs)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OnGoing)
+                @Html.DisplayFor(modelItem => item.Step)
             </td>
 
             <td>
                 <div class="btn-group" role="group">
                     <a class="btn btn-warning" asp-controller="Tournament" asp-action="Details" asp-route-id="@item.Id">Détails</a>
-                    @if (User.IsAdmin() && && !item.OnGoing)
+                    @if (User.IsAdmin() && !item.OnGoing)
                     {
                         <a class="btn btn-danger" asp-controller="Tournament" asp-action="Update" asp-route-id="@item.Id">Update</a>
                     }

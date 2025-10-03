@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WhistTournaments.BLL.Exceptions;
 using WhistTournaments.DAL.Repositories;
 using WhistTournaments.DL.Entities;
+using WhistTournaments.DL.Enums;
 
 namespace WhistTournaments.BLL.Services
 {
@@ -123,5 +124,7 @@ namespace WhistTournaments.BLL.Services
 
 
         }
+
+
     }
 }

@@ -6,6 +6,7 @@ using WhistTournaments.BLL.Exceptions;
 using WhistTournaments.BLL.Services;
 using WhistTournaments.DAL.Repositories;
 using WhistTournaments.DL.Entities;
+using WhistTournaments.DL.Enums;
 using WhistTournaments.Extensions;
 using WhistTournaments.Mappers;
 using WhistTournaments.Models.Tournaments;
@@ -52,6 +53,15 @@ namespace WhistTournaments.Controllers
                     {
                         var dto = t.ToTournamentIndexDto();
                         dto.IsUserSubscribed = _tournamentService.ExistByUserIdinTournament(t.Id, userId);
+                        if (_tournamentService.GetCountSubscribedPlayersByTournamentId(t.Id) < 16)
+                        {
+                            dto.Step = (Step)5;
+                        }
+                        else
+                        {
+                            dto.Step = _gameService.GetStepFromTournamentId(t.Id);
+                        }
+                            
                         return dto;
                     })
                     .ToList();
@@ -182,10 +192,20 @@ namespace WhistTournaments.Controllers
             {
                 _tournamentService.InitiateGames(id);
 
-                
             }
 
             return RedirectToAction("Index", "Tournament");
         }
+
+        //[Authorize(Roles = "Admin")]
+
+        //public IActionResult WriteResults([FromRoute] int id)
+        //{
+            
+
+        //    _tournamentService.GetStepFromTournamentId(id);
+
+
+        //}
     }
 }

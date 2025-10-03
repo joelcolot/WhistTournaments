@@ -165,7 +165,7 @@ namespace WhistTournaments.DAL.Repositories
             {
                 command.CommandText = @"SELECT COUNT(*) FROM SUBSCRIPTION tu WHERE TOURNAMENT_ID = @id;";
 
-                command.Parameters.AddWithValue("tournamentid", tournamentid);
+                command.Parameters.AddWithValue("id", tournamentid);
 
                 connection.Open();
 
@@ -268,6 +268,9 @@ namespace WhistTournaments.DAL.Repositories
 
             }
         }
+
+
+
         public Tournament MapTournament(SqlDataReader reader)
         {
             return new Tournament()

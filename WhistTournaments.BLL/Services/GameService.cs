@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WhistTournaments.DAL.Repositories;
 using WhistTournaments.DL.Entities;
+using WhistTournaments.DL.Enums;
 
 namespace WhistTournaments.BLL.Services
 {
@@ -21,6 +22,17 @@ namespace WhistTournaments.BLL.Services
         {
             return _gameRepository.GetAllGamesByTournamentId(id);
         }
+
+        public Step GetStepFromTournamentId(int tournamentid)
+        {
+
+            int step = _gameRepository.GetStepFromTournamentId(tournamentid);
+
+            return (Step)step;
+
+
+        }
+
 
 
     }

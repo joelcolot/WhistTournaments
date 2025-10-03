@@ -41,5 +41,8 @@ namespace WhistTournaments.Models.Tournaments
         public bool OnGoing { get; set; }
 
         public bool IsUserSubscribed { get; set; }
+
+        [DisplayName("Etape du Tournoi")]
+        public Step Step {  get; set; }
     }
 }

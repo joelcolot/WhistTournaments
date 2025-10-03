@@ -89,14 +89,67 @@ namespace WhistTournaments.DAL.Repositories
             }
         }
 
-        //public void InitiateGames(int id)
-        //{
-        //    using (SqlConnection connection = new SqlConnection(_connectionstring))
-        //    using (SqlCommand command = connection.CreateCommand())
-        //    {
-        //        command.CommandText = @"
-        //                                INSERT INTO GAME (TOURNAMENT_ID, "
-        //}
+        public int GetStepFromTournamentId(int tournamentid)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = @"SELECT
+                                            CASE WHEN NOT EXISTS (
+                                                    SELECT 1 
+                                                    FROM GAME 
+                                                    WHERE TOURNAMENT_ID = @tournamentId
+                                                ) THEN 0
+
+                                                WHEN EXISTS (
+                                                    SELECT 1 
+                                                    FROM GAME 
+                                                    WHERE TOURNAMENT_ID = @tournamentId 
+                                                      AND STEP IN (7, 6, 5, 4)
+                                                      AND (
+                                                          SCORE_1 IS NULL OR 
+                                                          SCORE_2 IS NULL OR 
+                                                          SCORE_3 IS NULL OR 
+                                                          SCORE_4 IS NULL
+                                                      )
+                                                ) THEN 1
+
+                                                WHEN EXISTS (
+                                                    SELECT 1 
+                                                    FROM GAME 
+                                                    WHERE TOURNAMENT_ID = @tournamentId 
+                                                      AND STEP IN (3, 2)
+                                                      AND (
+                                                          SCORE_1 IS NULL OR 
+                                                          SCORE_2 IS NULL OR 
+                                                          SCORE_3 IS NULL OR 
+                                                          SCORE_4 IS NULL
+                                                      )
+                                                ) THEN 2
+
+                                                WHEN EXISTS (
+                                                    SELECT 1 
+                                                    FROM GAME 
+                                                    WHERE TOURNAMENT_ID = @tournamentId 
+                                                      AND STEP = 1
+                                                      AND (
+                                                          SCORE_1 IS NULL OR 
+                                                          SCORE_2 IS NULL OR 
+                                                          SCORE_3 IS NULL OR 
+                                                          SCORE_4 IS NULL
+                                                      )
+                                                ) THEN 3
+
+                                                ELSE 4
+                                            END AS Step;";
+
+                command.Parameters.AddWithValue("tournamentid", tournamentid);
+
+                connection.Open();
+
+                return (int)command.ExecuteScalar();
+            }
+        }
 
         public Game MapGame(SqlDataReader reader)
         {
